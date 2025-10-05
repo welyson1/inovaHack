@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sedimento Vivo - Uma Proposta para a Ferroport</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-color: #f0f4f8;
+            background-image: 
+                linear-gradient(45deg, #e1e8f0 25%, transparent 25%), 
+                linear-gradient(-45deg, #e1e8f0 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #e1e8f0 75%),
+                linear-gradient(-45deg, transparent 75%, #e1e8f0 75%);
+            background-size: 20px 20px;
+        }
+        .calculator-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+        }
+        .impact-number, .counter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Estilos para a seção operacional */
+        .step-container {
+            position: relative;
+            padding-left: 50px;
+            padding-bottom: 2.5rem;
+        }
+        .step-container:last-child {
+            padding-bottom: 0;
+        }
+        .step-icon {
+            position: absolute;
+            left: -1px;
+            top: 0;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 4px solid #dbeafe; /* blue-100 */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .step-container:hover .step-icon {
+            border-color: #2563eb; /* blue-600 */
+            transform: scale(1.1);
+        }
+        .step-line {
+            position: absolute;
+            left: 23px;
+            top: 50px;
+            width: 4px;
+            height: calc(100% - 50px);
+            background: #dbeafe; /* blue-100 */
+        }
+        .step-container:last-child .step-line {
+            display: none;
+        }
+        .step-content {
+            cursor: pointer;
+        }
+        .step-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, margin-top 0.5s ease-out;
+        }
+        /* Animação de fade-in */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-800">Sedimento Vivo</h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#problema" class="text-gray-600 hover:text-blue-600">O Desafio</a>
+                <a href="#solucao" class="text-gray-600 hover:text-blue-600">Nossa Solução</a>
+                <a href="#operacional" class="text-gray-600 hover:text-blue-600">Implementação</a>
+                <a href="#produtos" class="text-gray-600 hover:text-blue-600">Aplicações</a>
+                <a href="#impacto" class="text-gray-600 hover:text-blue-600">Impacto</a>
+                <a href="#contato" class="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-700 cta-button">Faça Parte</a>
+            </nav>
+            <button class="md:hidden text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- O Desafio (Nova Seção de Abertura) -->
+    <section id="problema" class="hero-bg py-20 md:py-28">
+        <div class="container mx-auto px-6 fade-in-section">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight">O Desafio</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">A cada dois anos, a dragagem de manutenção da Ferroport gera um volume colossal de sedimento. A prática atual, embora licenciada, representa um ciclo de desperdício com profundos impactos ambientais, financeiros e sociais.</p>
+            </div>
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 md:p-12 rounded-2xl shadow-xl">
+                <div class="lg:w-1/2">
+                    <img src="https://portogente.com.br/images/portopedia/2017/dragagem-fig-1.jpg" alt="Visualização do descarte de sedimento no mar" class="rounded-lg shadow-lg">
+                </div>
+                <div class="lg:w-1/2 space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 bg-red-100 text-red-600 rounded-full h-12 w-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800">Desperdício de Recurso Valioso</h4>
+                            <p class="text-gray-600 mt-1">
+                                Até <strong class="text-2xl font-bold text-red-600"><span class="counter" data-target="800000">0</span></strong> toneladas de sedimento são <strong class="font-semibold">100% descartadas em "bota-fora" marítimo</strong>. Um recurso com imenso potencial para a construção civil é simplesmente jogado fora.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 bg-blue-100 text-blue-600 rounded-full h-12 w-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800">Impacto no Ecossistema Marinho</h4>
+                            <p class="text-gray-600 mt-1">
+                                O descarte gera plumas de sedimento que <strong class="font-semibold">aumentam a turbidez da água</strong>, prejudicando o fitoplâncton, e podem <strong class="font-semibold">sufocar a vida no fundo do mar</strong>, afetando a base da cadeia alimentar local.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                         <div class="flex-shrink-0 bg-yellow-100 text-yellow-600 rounded-full h-12 w-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v.01M12 18v-2m0-2v-2m0-2v-2m0-2V7m0 0V6" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800">Pegada de Carbono e Custo Financeiro</h4>
+                            <p class="text-gray-600 mt-1">
+                                A operação de dragagem e transporte do material consome uma <strong class="font-semibold">grande quantidade de combustível</strong>, emitindo gases de efeito estufa e representando um <strong class="font-semibold">custo operacional de milhões</strong> que poderia ser convertido em investimento.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nossa Solução -->
+    <section id="solucao" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6 fade-in-section">
+            <div class="text-center mb-12">
+                <h3 class="text-sm font-bold uppercase text-blue-600">Nossa Solução</h3>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Uma Plataforma de Triplo Impacto</h2>
+                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Propomos um framework de economia circular que transforma o sedimento de resíduo em recurso, gerando valor nos pilares Ambiental, Social e de Governança.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="bg-green-100 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 border-4 border-green-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Impacto Ambiental</h4>
+                    <p class="text-gray-600">Alinhamento com a meta "Aterro Zero", redução da pegada de carbono ao evitar o descarte no mar, conservação de recursos naturais (areia) e aumento da resiliência costeira da região.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="bg-blue-100 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 border-4 border-blue-200">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Impacto Social</h4>
+                    <p class="text-gray-600">Geração de empregos e renda na cadeia produtiva dos ecomateriais, melhoria da infraestrutura urbana e acesso a moradias dignas para a comunidade de São João da Barra.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="bg-indigo-100 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 border-4 border-indigo-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Inovação & Governança</h4>
+                    <p class="text-gray-600">Transformação de um custo operacional em um ativo de valor, fortalecimento da marca e da licença social para operar, e fomento à P&D através de parcerias com universidades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Operacional Interativa -->
+    <section id="operacional" class="py-20 bg-white">
+        <div class="container mx-auto px-6 fade-in-section">
+            <div class="text-center mb-16">
+                <h3 class="text-sm font-bold uppercase text-blue-600">Implementação Faseada</h3>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Nosso Roteiro para a Transformação</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Um plano pragmático alinhado aos ciclos de dragagem, com resultados tangíveis a curto e médio prazo. Clique em cada fase para saber mais.</p>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <!-- Passo 1 -->
+                <div class="step-container">
+                    <div class="step-line"></div>
+                    <div class="step-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </div>
+                    <div class="step-content pl-8" onclick="toggleDetails('details1')">
+                        <h4 class="text-xl font-bold text-gray-800 mb-1">Fase 1: P&D e Parcerias (Ano 1)</h4>
+                        <p class="text-gray-600">Construindo a base para a inovação e a cooperação.</p>
+                        <div id="details1" class="step-details">
+                            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
+                                <li><strong>Parcerias Estratégicas:</strong> Firmar convênios com universidades (UENF, IFFluminense) para P&D e com empresas locais de artefatos de cimento para produção.</li>
+                                <li><strong>Certificação Técnica:</strong> Realizar ensaios laboratoriais com o sedimento para garantir conformidade com as normas ABNT para materiais de construção.</li>
+                                <li><strong>Fomento a Empresas Juniores:</strong> Incentivar a criação de EJs nas universidades parceiras para desenvolver e otimizar os métodos de transformação do sedimento.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Passo 2 -->
+                <div class="step-container">
+                    <div class="step-line"></div>
+                    <div class="step-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                    </div>
+                    <div class="step-content pl-8" onclick="toggleDetails('details2')">
+                        <h4 class="text-xl font-bold text-gray-800 mb-1">Fase 2: Projeto Piloto (Ano 2)</h4>
+                        <p class="text-gray-600">Validando o conceito e demonstrando o impacto.</p>
+                         <div id="details2" class="step-details">
+                            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
+                                <li><strong>Produção Piloto:</strong> Utilizar o material do próximo ciclo de dragagem para a primeira produção em escala piloto com os parceiros definidos.</li>
+                                <li><strong>Projeto de Demonstração:</strong> Executar uma obra simbólica, como a pavimentação de uma praça ou a construção de um muro comunitário, para validar a logística e a durabilidade.</li>
+                                <li><strong>Divulgação e Engajamento:</strong> Comunicar os resultados do piloto para a comunidade e stakeholders, gerando visibilidade e apoio para a próxima fase.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Passo 3 -->
+                <div class="step-container">
+                    <div class="step-icon">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </div>
+                    <div class="step-content pl-8" onclick="toggleDetails('details3')">
+                        <h4 class="text-xl font-bold text-gray-800 mb-1">Fase 3: Escalonamento (Ano 3+)</h4>
+                        <p class="text-gray-600">Ampliando o impacto e consolidando o legado.</p>
+                         <div id="details3" class="step-details">
+                            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
+                                <li><strong>Produção em Larga Escala:</strong> Aumentar a produção para atender a projetos de maior impacto, como o fornecimento para o programa habitacional de São João da Barra.</li>
+                                <li><strong>Implementação da Resiliência Costeira:</strong> Iniciar o primeiro projeto de alimentação artificial de praias, em parceria com o governo estadual e municipal.</li>
+                                <li><strong>Monitoramento e Relatório de Impacto:</strong> Medir e reportar continuamente os benefícios ESG gerados, consolidando a liderança da Ferroport em sustentabilidade.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos Gerados -->
+    <section id="produtos" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6 fade-in-section">
+            <div class="text-center mb-12">
+                <h3 class="text-sm font-bold uppercase text-blue-600">Produtos e Aplicações</h3>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Um universo de possibilidades sustentáveis.</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Produto 1 -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
+                    <img src="https://www.amigoconstrutor.com.br/dw/image/v2/BHFQ_PRD/on/demandware.static/-/Library-Sites-AmigoConstrutorSharedLibrary/default/dw2e6469bd/IMAGENS-BLOG/homem-construindo-tijolo-ecologico.jpg" alt="Tijolo Ecológico feito com sedimento" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Tijolo Ecológico</h4>
+                        <p class="text-gray-600">Resistente e com ótimo isolamento térmico, utiliza o sedimento como agregado, reduzindo o consumo de cimento e o custo final.</p>
+                    </div>
+                </div>
+                <!-- Produto 2 -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
+                    <img src="https://blocosdeconcretoarttraco.com.br/uploads/paver-para-calcada.jpg" alt="Bloco intertravado para pavimentação" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Bloco de Pavimentação</h4>
+                        <p class="text-gray-600">Ideal para calçadas, praças e ruas de baixo tráfego. Uma solução durável e permeável para a infraestrutura urbana da região.</p>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
+                    <img src="https://jangadashow.com.br/wp-content/uploads/2023/11/3QbAI0W-1024x576.jpg" alt="Areia para alimentação de praias" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Resiliência Costeira</h4>
+                        <p class="text-gray-600">A fração arenosa do sedimento, de alta compatibilidade, é ideal para projetos de "engorda" de praias, combatendo a erosão costeira.</p>
+                    </div>
+                </div>
+                 <!-- Produto 4 -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
+                    <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXc8MkHwWgChHN8bMr91Qj9_TT65jymZNCjegMEfeh3dgY_ClEPAs7TxsqlSHkkRa9ESGBJuzaBLpe2m_-ZKUKFLlkhcb06uwUd1r9SXZuHMnPXJP33dF6Au09fAoefWYGLNbhWYpy2yG0nYjOrOCMhLG4I-w3DsikzJI_ekEYqLgT-_9RgLtA?key=zlBde046Y4kuP96xAFUaRw" alt="Sub-base para estradas" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Sub-base para Estradas</h4>
+                        <p class="text-gray-600">Após tratamento, o sedimento pode compor a camada de sub-base de vias e pátios, reduzindo a necessidade de extração de areia e brita.</p>
+                    </div>
+                </div>
+                 <!-- Produto 5 -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
+                    <img src="https://p.turbosquid.com/ts-thumb/In/EdMoZt/HH6TGkum/preview_00/jpg/1524726891/600x600/fit_q87/f50ff3300ce9beea42ec57e38187ae591250e324/preview_00.jpg" alt="Artefatos de concreto como bancos e vasos" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Mobiliário Urbano</h4>
+                        <p class="text-gray-600">Produção de bancos de praça, vasos, meios-fios e outros artefatos de concreto para uso em espaços públicos, aliando durabilidade e sustentabilidade.</p>
+                    </div>
+                </div>
+                 <!-- Produto 6 -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
+                    <img src="https://espacoecologico.com.br/wp-content/uploads/2022/12/argamassa.jpg" alt="Argamassa sustentável" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Argamassa Sustentável</h4>
+                        <p class="text-gray-600">A fração fina do sedimento pode ser incorporada a argamassas para assentamento e revestimento, diminuindo o uso de cimento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculadora de Impacto -->
+    <section id="impacto" class="py-20">
+        <div class="container mx-auto px-6 fade-in-section">
+            <div class="calculator-card rounded-xl p-8 md:p-12 shadow-2xl">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold">Calculadora de Impacto</h2>
+                    <p class="mt-3 text-lg text-blue-200 max-w-2xl mx-auto">Veja o potencial de uma única dragagem. Simule a quantidade de casas populares que podemos ajudar a construir.</p>
+                </div>
+
+                <div class="max-w-md mx-auto mb-10">
+                    <label for="casas" class="block text-lg font-medium mb-2 text-blue-100">Quantas casas podemos construir?</label>
+                    <input type="range" id="casas" name="casas" min="10" max="500" value="100" class="w-full h-3 bg-blue-400 rounded-lg appearance-none cursor-pointer range-lg">
+                    <div class="flex justify-between text-xs text-blue-200 mt-1">
+                        <span>10</span>
+                        <span class="font-bold text-white text-lg -mt-1"><span id="casas-valor">100</span> casas</span>
+                        <span>500</span>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <p id="impacto-sedimento" class="impact-number">15.000</p>
+                        <p class="text-blue-200">Toneladas de sedimento reutilizadas</p>
+                    </div>
+                    <div>
+                        <p id="impacto-co2" class="impact-number">3.000</p>
+                        <p class="text-blue-200">Toneladas de CO₂ evitadas</p>
+                    </div>
+                    <div>
+                        <p id="impacto-familias" class="impact-number">100</p>
+                        <p class="text-blue-200">Famílias diretamente beneficiadas</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção Explicativa da Calculadora -->
+            <div class="max-w-4xl mx-auto mt-12 text-gray-700">
+                <h3 class="text-2xl font-bold text-center mb-6">Como chegamos a estes números?</h3>
+                <p class="text-center text-gray-600 mb-8">Nossos cálculos são baseados em médias da indústria da construção civil e estudos de caso de projetos de economia circular. Eles servem para ilustrar o imenso potencial do projeto "Sedimento Vivo".</p>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h4 class="text-lg font-bold text-blue-800">1. Toneladas de Sedimento Reutilizadas</h4>
+                        <p class="mt-2">O cálculo considera a quantidade média de material necessário para a alvenaria de uma casa de padrão popular (aproximadamente 50m²). Estimamos que cada casa construída com nossos tijolos ecológicos utiliza cerca de <strong class="font-semibold">150 toneladas de sedimento</strong>, que antes seria descartado. A fórmula é: <code class="bg-gray-200 p-1 rounded">Nº de Casas x 150</code>.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h4 class="text-lg font-bold text-blue-800">2. Toneladas de CO₂ Evitadas</h4>
+                        <p class="mt-2">Este valor reflete um duplo benefício ambiental. Primeiro, a substituição do cimento convencional (cuja produção é altamente poluente) e a eliminação da queima de tijolos de argila reduzem a pegada de carbono da construção. Segundo, evitamos as emissões de gases de efeito estufa geradas pelo transporte do sedimento até um aterro ("bota-fora"). A estimativa é de uma economia de <strong class="font-semibold">30 toneladas de CO₂ por casa</strong>. A fórmula é: <code class="bg-gray-200 p-1 rounded">Nº de Casas x 30</code>.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h4 class="text-lg font-bold text-blue-800">3. Famílias Diretamente Beneficiadas</h4>
+                        <p class="mt-2">Este é o nosso impacto social mais direto. A métrica é simples: para cada casa construída ou reformada com os materiais do projeto, consideramos que <strong class="font-semibold">uma família</strong> tem sua qualidade de vida e condição de moradia melhoradas.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    <!-- Contato/CTA -->
+    <footer id="contato" class="bg-gray-800 text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-4">Vamos transformar juntos?</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto mb-8">O projeto Sedimento Vivo está aberto a novos parceiros, ideias e colaboradores. Seja uma empresa, uma instituição de ensino ou um membro da comunidade, sua participação é fundamental para construirmos este legado.</p>
+            <a href="mailto:contato@sedimentovivo.com" class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-700 cta-button inline-block">Entre em Contato</a>
+            <div class="mt-12 text-gray-400">
+                <p>Uma proposta de inovação e sustentabilidade da Equipe 34 para a Ferroport.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animação de fade-in ao rolar
+        const fadeInSections = document.querySelectorAll('.fade-in-section');
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Animação dos contadores dentro da seção visível
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                       animateCount(counter);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeInSections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Animação dos contadores
+        const animateCount = (el) => {
+            const target = +el.getAttribute('data-target');
+            let count = 0;
+            const duration = 2000; // 2 segundos
+            const stepTime = Math.abs(Math.floor(duration / target)) || 1;
+
+            const timer = setInterval(() => {
+                const increment = Math.ceil(target / (duration / stepTime));
+                count = count + increment;
+                if (count >= target) {
+                    el.innerText = target.toLocaleString('pt-BR');
+                    clearInterval(timer);
+                } else {
+                    el.innerText = count.toLocaleString('pt-BR');
+                }
+            }, stepTime);
+        };
+        
+        // Script para a calculadora de impacto
+        const casasSlider = document.getElementById('casas');
+        const casasValor = document.getElementById('casas-valor');
+        const impactoSedimento = document.getElementById('impacto-sedimento');
+        const impactoCo2 = document.getElementById('impacto-co2');
+        const impactoFamilias = document.getElementById('impacto-familias');
+
+        const SEDIMENTO_POR_CASA = 150; 
+        const CO2_POR_CASA = 30;
+        
+        function updateImpacto() {
+            const numCasas = parseInt(casasSlider.value);
+            casasValor.textContent = numCasas;
+            impactoSedimento.textContent = (numCasas * SEDIMENTO_POR_CASA).toLocaleString('pt-BR');
+            impactoCo2.textContent = (numCasas * CO2_POR_CASA).toLocaleString('pt-BR');
+            impactoFamilias.textContent = numCasas;
+        }
+
+        casasSlider.addEventListener('input', updateImpacto);
+        document.addEventListener('DOMContentLoaded', updateImpacto);
+
+
+        // Script para a seção operacional interativa
+        function toggleDetails(elementId) {
+            const element = document.getElementById(elementId);
+            const allDetails = document.querySelectorAll('.step-details');
+
+            allDetails.forEach(detail => {
+                if (detail.id !== elementId) {
+                    detail.style.maxHeight = '0px';
+                    detail.style.marginTop = '0px';
+                }
+            });
+
+            if (element.style.maxHeight && element.style.maxHeight !== '0px') {
+                element.style.maxHeight = '0px';
+                element.style.marginTop = '0px';
+            } else {
+                element.style.maxHeight = element.scrollHeight + 'px';
+                element.style.marginTop = '1rem';
+            }
+        }
+    </script>
+</body>
+</html>
+
