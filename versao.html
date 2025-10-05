@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sedimento Vivo | Ferroport - Economia Circular em Ação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+        }
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(0, 5, 20, 0.8), rgba(0, 5, 20, 0.6)), url('https://images.unsplash.com/photo-1582202283639-328335937109?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+        }
+        .section-title {
+            font-weight: 900;
+            font-size: 2.5rem;
+        }
+        .tab-active {
+            border-bottom-color: #00A8E8;
+            color: #00A8E8;
+            font-weight: 700;
+        }
+        .tab-inactive {
+            border-bottom-color: transparent;
+            color: #4A5568;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1.25rem;
+            left: -0.625rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 9999px;
+            background-color: #FFFFFF;
+            border: 4px solid #00A8E8;
+            z-index: 10;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                 <svg class="h-10 w-10 text-[#00A8E8]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.5 14.5v-3H8v-3h2.5V8H14v3.5h2.5v3H14v2c0 .83.67 1.5 1.5 1.5h1v2h-2.5c-2.48 0-4.5-2.02-4.5-4.5z"/></svg>
+                <span class="font-bold text-2xl text-gray-800">Sedimento<span class="text-[#00A8E8]">Vivo</span></span>
+            </div>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#desafio" class="text-gray-600 hover:text-[#00A8E8] transition-colors">O Desafio</a>
+                <a href="#solucao" class="text-gray-600 hover:text-[#00A8E8] transition-colors">A Solução</a>
+                <a href="#impacto" class="text-gray-600 hover:text-[#00A8E8] transition-colors">Impacto</a>
+                <a href="#roadmap" class="text-gray-600 hover:text-[#00A8E8] transition-colors">Roadmap</a>
+                <a href="#contato" class="bg-[#00A8E8] text-white px-4 py-2 rounded-full hover:bg-opacity-90 transition-all">Participe</a>
+            </div>
+             <button id="mobile-menu-button" class="md:hidden text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#desafio" class="block text-gray-600 hover:text-[#00A8E8] transition-colors">O Desafio</a>
+            <a href="#solucao" class="block text-gray-600 hover:text-[#00A8E8] transition-colors">A Solução</a>
+            <a href="#impacto" class="block text-gray-600 hover:text-[#00A8E8] transition-colors">Impacto</a>
+            <a href="#roadmap" class="block text-gray-600 hover:text-[#00A8E8] transition-colors">Roadmap</a>
+            <a href="#contato" class="block bg-[#00A8E8] text-white px-4 py-2 rounded-full hover:bg-opacity-90 transition-all text-center">Participe</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero-bg text-white">
+            <div class="container mx-auto px-6 py-32 text-center">
+                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4 animate-fade-in-down">
+                    Sedimento Vivo: Transformando Resíduo em Recurso
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fade-in-up">
+                    Uma iniciativa de economia circular da Ferroport para gerar valor ambiental, social e de governança a partir do sedimento de dragagem.
+                </p>
+                <a href="#desafio" class="bg-white text-[#00A8E8] font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-100 transition-all transform hover:scale-105">
+                    Conheça o Projeto
+                </a>
+            </div>
+        </section>
+
+        <!-- The Challenge Section -->
+        <section id="desafio" class="py-20 bg-white">
+            <div class="container mx-auto px-6 fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="section-title text-gray-900">O Desafio: Repensar Nosso Maior Resíduo</h2>
+                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">
+                        A cada dois anos, a dragagem de manutenção da Ferroport gera um volume massivo de sedimento. Hoje, ele é um custo operacional e ambiental. Amanhã, será um pilar de desenvolvimento sustentável.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1542014364-113425916109?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Navio de dragagem" class="rounded-2xl shadow-2xl w-full">
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-gray-100 p-6 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-[#00A8E8]/20 text-[#00A8E8] p-3 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-2xl mb-1">200.000 m³ de Sedimento</h3>
+                                <p class="text-gray-600">É o volume gerado a cada ciclo de dragagem, hoje 100% descartado no mar. Isso equivale a 80 piscinas olímpicas.</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-[#00A8E8]/20 text-[#00A8E8] p-3 rounded-full">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-2xl mb-1">Custo e Emissões</h3>
+                                <p class="text-gray-600">O descarte representa um alto custo financeiro e uma emissão significativa de GEE devido ao combustível das dragas.</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-[#00A8E8]/20 text-[#00A8E8] p-3 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-2xl mb-1">Potencial Desperdiçado</h3>
+                                <p class="text-gray-600">Um material rico em areia e argila, com baixo nível de contaminação, é descartado enquanto a comunidade local demanda matéria-prima para infraestrutura.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution Section -->
+        <section id="solucao" class="py-20">
+            <div class="container mx-auto px-6 fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="section-title text-gray-900">A Solução: De Resíduo a Triplo Impacto</h2>
+                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">
+                        O framework Sedimento Vivo implementa a economia circular em duas frentes principais, transformando um passivo ambiental em um ativo para a sociedade.
+                    </p>
+                </div>
+                <!-- Tabs -->
+                <div class="mb-8">
+                    <div class="flex justify-center border-b border-gray-300">
+                        <button class="tab-button tab-active py-4 px-6 text-lg transition-all" data-target="tab-construir">
+                            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>Construir Local</span>
+                        </button>
+                        <button class="tab-button tab-inactive py-4 px-6 text-lg transition-all" data-target="tab-resiliencia">
+                            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>Resiliência Costeira</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="tab-construir" class="tab-content">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <div class="space-y-4">
+                            <h3 class="text-3xl font-bold">Construção Civil com Impacto Social</h3>
+                            <p class="text-gray-600 text-lg">
+                                Utilizamos a fração arenosa do sedimento, de alta qualidade, como agregado para fabricar materiais de construção de baixo custo.
+                            </p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start"><span class="text-[#00A8E8] font-bold mr-2">✔</span><span>Produção de blocos de pavimentação, tijolos ecológicos e argamassa.</span></li>
+                                <li class="flex items-start"><span class="text-[#00A8E8] font-bold mr-2">✔</span><span>Parceria com prefeituras e universidades para uso em obras de infraestrutura comunitária.</span></li>
+                                <li class="flex items-start"><span class="text-[#00A8E8] font-bold mr-2">✔</span><span>Fornecimento de material para programas de habitação social, como as 328 unidades planejadas em São João da Barra.</span></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Construção Civil" class="rounded-2xl shadow-xl w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-resiliencia" class="tab-content hidden">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <div class="space-y-4">
+                            <h3 class="text-3xl font-bold">Adaptação Climática e Resiliência Costeira</h3>
+                            <p class="text-gray-600 text-lg">
+                                A areia de alta compatibilidade granulométrica é um recurso vital para a proteção da nossa costa, que sofre com a erosão.
+                            </p>
+                             <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start"><span class="text-[#00A8E8] font-bold mr-2">✔</span><span>Uso do sedimento em projetos de alimentação artificial de praias ("engorda de praias").</span></li>
+                                <li class="flex items-start"><span class="text-[#00A8E8] font-bold mr-2">✔</span><span>Aumento da resiliência da costa do Norte Fluminense contra o avanço do mar e eventos climáticos extremos.</span></li>
+                                <li class="flex items-start"><span class="text-[#00A8E8] font-bold mr-2">✔</span><span>Posiciona a Ferroport como parceira estratégica na adaptação climática regional, protegendo ecossistemas e comunidades.</span></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Resiliência Costeira" class="rounded-2xl shadow-xl w-full">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Impact Section -->
+        <section id="impacto" class="py-20 bg-white">
+            <div class="container mx-auto px-6 fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="section-title text-gray-900">Impacto Real, Valor Compartilhado</h2>
+                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">
+                       Alinhado aos pilares ESG, o Sedimento Vivo gera benefícios tangíveis para a empresa, a comunidade e o planeta.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Accordion Item 1: Ambiental -->
+                    <div class="accordion-item bg-gray-50 rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+                        <button class="accordion-header w-full text-left p-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="bg-green-100 text-green-600 rounded-full p-3 mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                </div>
+                                <span class="text-2xl font-bold">Ambiental</span>
+                            </div>
+                            <span class="accordion-icon text-2xl font-bold text-gray-500 transform transition-transform">+</span>
+                        </button>
+                        <div class="accordion-content px-6 pb-6">
+                            <ul class="space-y-3 text-gray-600">
+                                <li><strong>Redução da Pegada de Carbono:</strong> Menos transporte marítimo e substituição de areia virgem.</li>
+                                <li><strong>Economia Circular:</strong> Meta "Aterro Zero" para 100% do sedimento dragado.</li>
+                                <li><strong>Conservação de Recursos:</strong> Redução da pressão sobre jazidas de areia em rios.</li>
+                                <li><strong>Adaptação Climática:</strong> Proteção da linha de costa contra a erosão.</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <!-- Accordion Item 2: Social -->
+                    <div class="accordion-item bg-gray-50 rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+                        <button class="accordion-header w-full text-left p-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 text-blue-600 rounded-full p-3 mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                </div>
+                                <span class="text-2xl font-bold">Social</span>
+                            </div>
+                            <span class="accordion-icon text-2xl font-bold text-gray-500 transform transition-transform">+</span>
+                        </button>
+                        <div class="accordion-content px-6 pb-6">
+                            <ul class="space-y-3 text-gray-600">
+                                <li><strong>Desenvolvimento Comunitário:</strong> Ruas pavimentadas e moradias dignas.</li>
+                                <li><strong>Geração de Emprego e Renda:</strong> Criação de postos de trabalho na cadeia de produção.</li>
+                                <li><strong>Fortalecimento de Relações:</strong> Consolida a Ferroport como parceira do desenvolvimento regional.</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <!-- Accordion Item 3: Governança -->
+                    <div class="accordion-item bg-gray-50 rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+                        <button class="accordion-header w-full text-left p-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="bg-purple-100 text-purple-600 rounded-full p-3 mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                                </div>
+                                <span class="text-2xl font-bold">Governança</span>
+                            </div>
+                            <span class="accordion-icon text-2xl font-bold text-gray-500 transform transition-transform">+</span>
+                        </button>
+                        <div class="accordion-content px-6 pb-6">
+                           <ul class="space-y-3 text-gray-600">
+                                <li><strong>Transformação de Custo em Valor:</strong> Converte uma despesa operacional em um ativo social.</li>
+                                <li><strong>Fortalecimento da Marca:</strong> Solidifica a liderança ESG da Ferroport no setor.</li>
+                                <li><strong>Melhora em Ratings:</strong> Aumenta a atratividade para investidores e melhora a avaliação em índices de sustentabilidade.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap" class="py-20">
+            <div class="container mx-auto px-6 fade-in">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-gray-900">Nosso Plano de Ação</h2>
+                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">
+                        Uma jornada faseada, do conceito à realidade, alinhada aos ciclos de dragagem e focada em resultados tangíveis.
+                    </p>
+                </div>
+                <div class="relative">
+                    <!-- Timeline line -->
+                    <div class="absolute left-0 md:left-1/2 top-0 h-full w-1 bg-gray-300 -ml-0.5"></div>
+                    
+                    <!-- Timeline Item 1 -->
+                    <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-12 h-12 rounded-full">
+                           <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-2xl shadow-xl w-full md:w-5/12 p-6 border-l-4 border-[#00A8E8]">
+                            <h3 class="font-bold text-gray-800 text-xl mb-2">Fase 1: Estruturação e Viabilidade</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-600 text-opacity-100">P&D, validação técnica, formalização de parcerias estratégicas com prefeituras e universidades, e desenvolvimento do plano de negócios.</p>
+                            <span class="text-sm font-semibold text-[#00A8E8] mt-2 block">Ano 1</span>
+                        </div>
+                    </div>
+
+                     <!-- Timeline Item 2 -->
+                     <div class="mb-12 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-12 h-12 rounded-full">
+                           <h1 class="mx-auto font-semibold text-lg text-white">2</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-2xl shadow-xl w-full md:w-5/12 p-6 border-r-4 border-[#00A8E8] md:border-l-0 md:text-right">
+                            <h3 class="font-bold text-gray-800 text-xl mb-2">Fase 2: Projeto Piloto</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-600 text-opacity-100">Processamento de um volume inicial do sedimento, produção dos primeiros lotes de materiais e execução de uma obra demonstrativa para validar a solução.</p>
+                             <span class="text-sm font-semibold text-[#00A8E8] mt-2 block">Ano 2</span>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 3 -->
+                    <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-12 h-12 rounded-full">
+                           <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-2xl shadow-xl w-full md:w-5/12 p-6 border-l-4 border-[#00A8E8]">
+                            <h3 class="font-bold text-gray-800 text-xl mb-2">Fase 3: Escalonamento Contínuo</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-600 text-opacity-100">Aumento progressivo do volume reutilizado, atendendo projetos de grande escala como habitação social e engorda de praias, e consolidando a cadeia de valor local.</p>
+                            <span class="text-sm font-semibold text-[#00A8E8] mt-2 block">Ano 3+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Partners Section -->
+        <section id="parceiros" class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center fade-in">
+                <h2 class="section-title text-gray-900 mb-4">Juntos, Construímos Mais Forte</h2>
+                <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">O sucesso do Sedimento Vivo é fruto da colaboração entre a Ferroport e parceiros estratégicos.</p>
+                <div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-8">
+                    <img src="https://placehold.co/150x80/E2E8F0/4A5568?text=Ferroport" alt="Logo Ferroport" class="h-16 grayscale hover:grayscale-0 transition-all">
+                    <img src="https://placehold.co/150x80/E2E8F0/4A5568?text=Anglo+American" alt="Logo Anglo American" class="h-16 grayscale hover:grayscale-0 transition-all">
+                    <img src="https://placehold.co/150x80/E2E8F0/4A5568?text=Prumo" alt="Logo Prumo" class="h-16 grayscale hover:grayscale-0 transition-all">
+                    <img src="https://placehold.co/150x80/E2E8F0/4A5568?text=Prefeituras" alt="Logo Prefeituras" class="h-16 grayscale hover:grayscale-0 transition-all">
+                    <img src="https://placehold.co/150x80/E2E8F0/4A5568?text=UENF" alt="Logo UENF" class="h-16 grayscale hover:grayscale-0 transition-all">
+                    <img src="https://placehold.co/150x80/E2E8F0/4A5568?text=IFFluminense" alt="Logo IFFluminense" class="h-16 grayscale hover:grayscale-0 transition-all">
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contato" class="py-20 bg-gray-800 text-white">
+             <div class="container mx-auto px-6 text-center fade-in">
+                <h2 class="text-4xl font-black mb-4">Faça Parte da Transformação</h2>
+                <p class="text-lg text-gray-300 mb-10 max-w-2xl mx-auto">Seja você um potencial parceiro, pesquisador, ou membro da comunidade, sua colaboração é bem-vinda para fortalecer esta iniciativa.</p>
+                 <a href="mailto:sustentabilidade@ferroport.com.br?subject=Interesse no Projeto Sedimento Vivo" class="bg-[#00A8E8] text-white font-bold py-4 px-10 rounded-full text-xl hover:bg-opacity-90 transition-all transform hover:scale-105 inline-block">
+                    Entre em Contato
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 Ferroport Logística Comercial Exportadora S.A. Todos os direitos reservados.</p>
+            <p>O Projeto Sedimento Vivo é uma iniciativa alinhada à nossa estratégia de liderança em ESG.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Tabs functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.target;
+
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                });
+
+                button.classList.add('tab-active');
+                button.classList.remove('tab-inactive');
+
+                tabContents.forEach(content => {
+                    if (content.id === target) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+        
+        // Accordion functionality
+        const accordionItems = document.querySelectorAll('.accordion-item');
+
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            const content = item.querySelector('.accordion-content');
+            const icon = item.querySelector('.accordion-icon');
+
+            header.addEventListener('click', () => {
+                const isOpen = content.style.maxHeight;
+
+                // Close all accordions
+                accordionItems.forEach(otherItem => {
+                    otherItem.querySelector('.accordion-content').style.maxHeight = null;
+                    otherItem.querySelector('.accordion-icon').classList.remove('rotate-45');
+                });
+
+                if (!isOpen) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.classList.add('rotate-45');
+                }
+            });
+        });
+
+        // Fade-in on scroll
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.2,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver(function(
+            entries,
+            appearOnScroll
+        ) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+
+    </script>
+
+</body>
+</html>
