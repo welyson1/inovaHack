@@ -98,6 +98,21 @@
         .vis-time-axis .vis-grid.vis-odd {
             background: #f8f3e9;
         }
+        /* Custom marker for today on timeline */
+        .vis-custom-time.today-marker {
+            border-left: 2px dashed #ef4444; /* red-500 */
+        }
+        .vis-custom-time.today-marker .vis-label {
+            background-color: #ef4444;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            transform: translateY(-100%);
+            top: -5px;
+        }
+
 
         /* Modal Styles */
         #task-modal, #actor-modal {
@@ -413,6 +428,116 @@
           { "key": "peopleTrained", "value": 30, "label": "Pessoas Capacitadas" },
           { "key": "jobsCreated", "value": 15, "label": "Empregos Gerados" }
         ]
+    },
+    {
+      "id": "task-007",
+      "phaseId": "phase-01",
+      "title": "Mapeamento de Stakeholders",
+      "description": "Identificar e engajar todas as partes interessadas, incluindo comunidades, governo e indústria.",
+      "status": "Concluído",
+      "assignedTo": ["actor-01", "actor-03", "actor-05"],
+      "startDate": "2025-02-01",
+      "endDate": "2025-04-01",
+      "deliverableIds": [],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-008",
+      "phaseId": "phase-01",
+      "title": "Estudo de Mercado para Produtos",
+      "description": "Analisar a demanda e o potencial de mercado para tijolos, pavers e outros produtos derivados do sedimento.",
+      "status": "Em Andamento",
+      "assignedTo": ["actor-02", "actor-06"],
+      "startDate": "2025-06-01",
+      "endDate": "2025-08-30",
+      "deliverableIds": [],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-009",
+      "phaseId": "phase-02",
+      "title": "Desenvolvimento de Traços de Concreto",
+      "description": "Testar diferentes proporções de cimento, areia e sedimento para otimizar resistência e custo.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-02", "actor-07"],
+      "startDate": "2025-10-15",
+      "endDate": "2026-01-15",
+      "deliverableIds": [],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-010",
+      "phaseId": "phase-02",
+      "title": "Licenciamento da Planta Piloto",
+      "description": "Submeter e acompanhar o processo de licenciamento ambiental para a operação piloto junto ao INEA.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-04"],
+      "startDate": "2025-11-01",
+      "endDate": "2026-02-28",
+      "deliverableIds": [],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-011",
+      "phaseId": "phase-03",
+      "title": "Construção da Unidade de Beneficiamento",
+      "description": "Edificação da planta industrial para processamento, mistura e produção em larga escala.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-06"],
+      "startDate": "2026-07-01",
+      "endDate": "2027-03-30",
+      "deliverableIds": [],
+      "kpiImpact": [
+        { "key": "jobsCreated", "value": 25, "label": "Empregos Gerados" }
+      ]
+    },
+    {
+      "id": "task-012",
+      "phaseId": "phase-03",
+      "title": "Logística de Distribuição",
+      "description": "Estruturar a logística para transporte de matéria-prima e distribuição dos produtos finais na região.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-01", "actor-06"],
+      "startDate": "2027-01-01",
+      "endDate": "2027-04-30",
+      "deliverableIds": [],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-013",
+      "phaseId": "phase-04",
+      "title": "Monitoramento Contínuo de Qualidade",
+      "description": "Implementar rotina de testes de laboratório para garantir a conformidade dos produtos com as normas técnicas.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-02"],
+      "startDate": "2027-05-01",
+      "endDate": "2027-12-31",
+      "deliverableIds": [],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-014",
+      "phaseId": "phase-04",
+      "title": "Relatório Anual de Impacto",
+      "description": "Publicar relatório anual com os resultados e impactos socioambientais do projeto para stakeholders.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-01"],
+      "startDate": "2027-12-01",
+      "endDate": "2028-01-30",
+      "deliverableIds": [],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-015",
+      "phaseId": "phase-04",
+      "title": "Pesquisa de Novas Aplicações",
+      "description": "Manter parceria com a UENF para pesquisar e desenvolver novos produtos a partir do sedimento.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-02"],
+      "startDate": "2027-06-01",
+      "endDate": "2028-06-01",
+      "deliverableIds": [],
+      "kpiImpact": []
     }
   ],
   "deliverables": [
@@ -456,7 +581,8 @@
     "kpiSummary": [
       { "key": "sedimentReused_m3", "value": 5000, "label": "Sedimento Reutilizado (m³)" },
       { "key": "familiesBenefited", "value": 40, "label": "Famílias Beneficiadas" },
-      { "key": "jobsCreated", "value": 15, "label": "Empregos Gerados" },
+      { "key": "peopleTrained", "value": 30, "label": "Pessoas Capacitadas" },
+      { "key": "jobsCreated", "value": 40, "label": "Empregos Gerados" },
       { "key": "ghgAvoided_tCO2e", "value": 15, "label": "GEE Evitado (tCO₂e)" }
     ],
     "timelineEvents": [
@@ -465,7 +591,16 @@
       { "id": "task-003", "phase": "Fase 1", "content": "Análise Regulatória", "start": "2025-05-01", "end": "2025-09-30", "group": "Viabilidade" },
       { "id": "task-004", "phase": "Fase 2", "content": "Produção dos Protótipos", "start": "2025-10-01", "end": "2025-12-31", "group": "Piloto" },
       { "id": "task-005", "phase": "Fase 2", "content": "Obra Demonstrativa", "start": "2026-01-15", "end": "2026-03-15", "group": "Piloto" },
-      { "id": "task-006", "phase": "Fase 3", "content": "Capacitação Profissional", "start": "2026-04-01", "end": "2026-06-30", "group": "Escala" }
+      { "id": "task-006", "phase": "Fase 3", "content": "Capacitação Profissional", "start": "2026-04-01", "end": "2026-06-30", "group": "Escala" },
+      { "id": "task-007", "phase": "Fase 1", "content": "Mapeamento de Stakeholders", "start": "2025-02-01", "end": "2025-04-01", "group": "Viabilidade" },
+      { "id": "task-008", "phase": "Fase 1", "content": "Estudo de Mercado", "start": "2025-06-01", "end": "2025-08-30", "group": "Viabilidade" },
+      { "id": "task-009", "phase": "Fase 2", "content": "Desenvolvimento de Traços", "start": "2025-10-15", "end": "2026-01-15", "group": "Piloto" },
+      { "id": "task-010", "phase": "Fase 2", "content": "Licenciamento Piloto", "start": "2025-11-01", "end": "2026-02-28", "group": "Piloto" },
+      { "id": "task-011", "phase": "Fase 3", "content": "Construção da Unidade", "start": "2026-07-01", "end": "2027-03-30", "group": "Escala" },
+      { "id": "task-012", "phase": "Fase 3", "content": "Logística de Distribuição", "start": "2027-01-01", "end": "2027-04-30", "group": "Escala" },
+      { "id": "task-013", "phase": "Fase 4", "content": "Monitoramento de Qualidade", "start": "2027-05-01", "end": "2027-12-31", "group": "Operação" },
+      { "id": "task-014", "phase": "Fase 4", "content": "Relatório Anual de Impacto", "start": "2027-12-01", "end": "2028-01-30", "group": "Operação" },
+      { "id": "task-015", "phase": "Fase 4", "content": "P&D Novas Aplicações", "start": "2027-06-01", "end": "2028-06-01", "group": "Operação" }
     ],
     "mapPoints": [
        {
@@ -578,89 +713,128 @@
                     </div>
                     
                     <!-- KPI Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        ${kpis.map(kpi => `
-                            <div class="bg-surface p-6 rounded-lg shadow-md border-l-4 border-primary">
-                                <p class="text-sm font-medium text-text-secondary">${kpi.label}</p>
-                                <p class="text-4xl font-bold mt-2" style="color: var(--color-primary);">${kpi.value.toLocaleString('pt-BR')}</p>
-                            </div>
-                        `).join('')}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                        ${kpis.map((kpi, index) => {
+                            const colors = [
+                                { border: 'border-green-500', text: 'text-green-600', iconBg: 'bg-green-100' },
+                                { border: 'border-sky-500', text: 'text-sky-600', iconBg: 'bg-sky-100' },
+                                { border: 'border-blue-500', text: 'text-blue-600', iconBg: 'bg-blue-100' },
+                                { border: 'border-amber-500', text: 'text-amber-600', iconBg: 'bg-amber-100' },
+                                { border: 'border-violet-500', text: 'text-violet-600', iconBg: 'bg-violet-100' },
+                            ];
+                            const color = colors[index % colors.length];
+
+                            const icons = [
+                                // Sedimento Reutilizado
+                                `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 ${color.text}"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>`,
+                                // Famílias Beneficiadas
+                                `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 ${color.text}"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5-1.5-.5M5.25 7.455 3 9m0 0l-1.5-1.5" /></svg>`,
+                                // Pessoas Capacitadas
+                                `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 ${color.text}"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>`,
+                                // Empregos Gerados
+                                `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 ${color.text}"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.075c0 1.313-1.062 2.375-2.375 2.375H6.125c-1.313 0-2.375-1.062-2.375-2.375V14.15M12 4.5v6.75m0 0l-3.75-3.75M12 11.25l3.75-3.75M12 4.5c1.933 0 3.5 1.567 3.5 3.5s-1.567 3.5-3.5 3.5-3.5-1.567-3.5-3.5 1.567-3.5 3.5-3.5z" /></svg>`,
+                                // GEE Evitado
+                                `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 ${color.text}"><path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.375A9.375 9.375 0 003.375 12.75 9.375 9.375 0 0012.75 22.125 9.375 9.375 0 0022.125 12.75 9.375 9.375 0 0012.75 3.375z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9.75l-4.5 4.5-2.25-2.25" /></svg>`
+                            ];
+
+                            return `
+                                <div class="bg-surface p-4 rounded-lg shadow-md border-l-4 ${color.border} flex items-center space-x-4">
+                                    <div class="flex-shrink-0 w-14 h-14 rounded-lg ${color.iconBg} flex items-center justify-center">
+                                        ${icons[index % icons.length]}
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-text-secondary truncate">${kpi.label}</p>
+                                        <p class="text-2xl xl:text-3xl font-bold ${color.text}">${kpi.value.toLocaleString('pt-BR')}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
 
-                    <!-- Charts & Map -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2 bg-surface p-6 rounded-lg shadow-md">
-                            <h3 class="text-lg font-semibold mb-4">Linha do Tempo do Projeto</h3>
-                            <div id="timeline-container" style="height: 400px;"></div>
+                    <!-- Charts Row -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-surface p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-1">Engajamento por Ator</h3>
+                            <p class="text-sm text-text-secondary mb-4">Número de tarefas atribuídas a cada organização.</p>
+                            <canvas id="actors-chart" style="max-height: 350px;"></canvas>
                         </div>
                         <div class="bg-surface p-6 rounded-lg shadow-md">
-                            <h3 class="text-lg font-semibold mb-4">Distribuição de Tarefas</h3>
-                            <canvas id="tasks-chart"></canvas>
+                             <h3 class="text-lg font-semibold mb-1">Progresso Geral das Tarefas</h3>
+                             <p class="text-sm text-text-secondary mb-4">Um resumo do status de todas as atividades planejadas.</p>
+                            <canvas id="tasks-chart" style="max-height: 350px;"></canvas>
                         </div>
                     </div>
 
-                    <div class="bg-surface p-6 rounded-lg shadow-md">
-                         <h3 class="text-lg font-semibold mb-4">Mapa de Atores e Impacto</h3>
-                         <div id="map" class="rounded-lg" style="height: 500px;"></div>
-                    </div>
+                    <div class="space-y-8 mt-8">
+                        <div class="bg-surface p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-1">Cronograma Interativo do Projeto</h3>
+                            <p class="text-sm text-text-secondary mb-4">Navegue pelas fases e veja as principais entregas ao longo do tempo.</p>
+                            <div id="timeline-container" style="height: 400px;"></div>
+                        </div>
 
-                    <!-- Produtos Gerados -->
-                    <section id="produtos">
-                        <div class="text-center mb-12">
-                            <h3 class="text-sm font-bold uppercase" style="color: var(--color-primary);">Produtos e Aplicações</h3>
-                            <h2 class="text-3xl md:text-4xl font-bold text-text-primary mt-2">Um universo de possibilidades sustentáveis.</h2>
+                        <div class="bg-surface p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-4">Mapa de Atores e Impacto</h3>
+                            <div id="map" class="rounded-lg" style="height: 500px;"></div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <!-- Produto 1 -->
-                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
-                                <img src="https://www.amigoconstrutor.com.br/dw/image/v2/BHFQ_PRD/on/demandware.static/-/Library-Sites-AmigoConstrutorSharedLibrary/default/dw2e6469bd/IMAGENS-BLOG/homem-construindo-tijolo-ecologico.jpg" alt="Tijolo Ecológico feito com sedimento" class="w-full h-56 object-cover">
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Tijolo Ecológico</h4>
-                                    <p class="text-text-secondary">Resistente e com ótimo isolamento térmico, utiliza o sedimento como agregado, reduzindo o consumo de cimento e o custo final.</p>
+
+                        <!-- Produtos Gerados -->
+                        <section id="produtos">
+                            <div class="text-center mb-12">
+                                <h3 class="text-sm font-bold uppercase" style="color: var(--color-primary);">Produtos e Aplicações</h3>
+                                <h2 class="text-3xl md:text-4xl font-bold text-text-primary mt-2">Um universo de possibilidades sustentáveis.</h2>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                <!-- Produto 1 -->
+                                <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                    <img src="https://www.amigoconstrutor.com.br/dw/image/v2/BHFQ_PRD/on/demandware.static/-/Library-Sites-AmigoConstrutorSharedLibrary/default/dw2e6469bd/IMAGENS-BLOG/homem-construindo-tijolo-ecologico.jpg" alt="Tijolo Ecológico feito com sedimento" class="w-full h-56 object-cover">
+                                    <div class="p-6">
+                                        <h4 class="text-xl font-bold mb-2 text-text-primary">Tijolo Ecológico</h4>
+                                        <p class="text-text-secondary">Resistente e com ótimo isolamento térmico, utiliza o sedimento como agregado, reduzindo o consumo de cimento e o custo final.</p>
+                                    </div>
+                                </div>
+                                <!-- Produto 2 -->
+                                <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                    <img src="https://blocosdeconcretoarttraco.com.br/uploads/paver-para-calcada.jpg" alt="Bloco intertravado para pavimentação" class="w-full h-56 object-cover">
+                                    <div class="p-6">
+                                        <h4 class="text-xl font-bold mb-2 text-text-primary">Bloco de Pavimentação</h4>
+                                        <p class="text-text-secondary">Ideal para calçadas, praças e ruas de baixo tráfego. Uma solução durável e permeável para a infraestrutura urbana da região.</p>
+                                    </div>
+                                </div>
+                                <!-- Produto 3 -->
+                                <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                    <img src="https://jangadashow.com.br/wp-content/uploads/2023/11/3QbAI0W-1024x576.jpg" alt="Areia para alimentação de praias" class="w-full h-56 object-cover">
+                                    <div class="p-6">
+                                        <h4 class="text-xl font-bold mb-2 text-text-primary">Resiliência Costeira</h4>
+                                        <p class="text-text-secondary">A fração arenosa do sedimento, de alta compatibilidade, é ideal para projetos de "engorda" de praias, combatendo a erosão costeira.</p>
+                                    </div>
+                                </div>
+                                <!-- Produto 4 -->
+                                <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                    <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXc8MkHwWgChHN8bMr91Qj9_TT65jymZNCjegMEfeh3dgY_ClEPAs7TxsqlSHkkRa9ESGBJuzaBLpe2m_-ZKUKFLlkhcb06uwUd1r9SXZuHMnPXJP33dF6Au09fAoefWYGLNbhWYpy2yG0nYjOrOCMhLG4I-w3DsikzJI_ekEYqLgT-_9RgLtA?key=zlBde046Y4kuP96xAFUaRw" alt="Sub-base para estradas" class="w-full h-56 object-cover">
+                                    <div class="p-6">
+                                        <h4 class="text-xl font-bold mb-2 text-text-primary">Sub-base para Estradas</h4>
+                                        <p class="text-text-secondary">Após tratamento, o sedimento pode compor a camada de sub-base de vias e pátios, reduzindo a necessidade de extração de areia e brita.</p>
+                                    </div>
+                                </div>
+                                <!-- Produto 5 -->
+                                <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                    <img src="https://p.turbosquid.com/ts-thumb/In/EdMoZt/HH6TGkum/preview_00/jpg/1524726891/600x600/fit_q87/f50ff3300ce9beea42ec57e38187ae591250e324/preview_00.jpg" alt="Artefatos de concreto como bancos e vasos" class="w-full h-56 object-cover">
+                                    <div class="p-6">
+                                        <h4 class="text-xl font-bold mb-2 text-text-primary">Mobiliário Urbano</h4>
+                                        <p class="text-text-secondary">Produção de bancos de praça, vasos, meios-fios e outros artefatos de concreto para uso em espaços públicos, aliando durabilidade e sustentabilidade.</p>
+                                    </div>
+                                </div>
+                                <!-- Produto 6 -->
+                                <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                    <img src="https://espacoecologico.com.br/wp-content/uploads/2022/12/argamassa.jpg" alt="Argamassa sustentável" class="w-full h-56 object-cover">
+                                    <div class="p-6">
+                                        <h4 class="text-xl font-bold mb-2 text-text-primary">Argamassa Sustentável</h4>
+                                        <p class="text-text-secondary">A fração fina do sedimento pode ser incorporada a argamassas para assentamento e revestimento, diminuindo o uso de cimento.</p>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Produto 2 -->
-                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
-                                <img src="https://blocosdeconcretoarttraco.com.br/uploads/paver-para-calcada.jpg" alt="Bloco intertravado para pavimentação" class="w-full h-56 object-cover">
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Bloco de Pavimentação</h4>
-                                    <p class="text-text-secondary">Ideal para calçadas, praças e ruas de baixo tráfego. Uma solução durável e permeável para a infraestrutura urbana da região.</p>
-                                </div>
-                            </div>
-                            <!-- Produto 3 -->
-                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
-                                <img src="https://jangadashow.com.br/wp-content/uploads/2023/11/3QbAI0W-1024x576.jpg" alt="Areia para alimentação de praias" class="w-full h-56 object-cover">
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Resiliência Costeira</h4>
-                                    <p class="text-text-secondary">A fração arenosa do sedimento, de alta compatibilidade, é ideal para projetos de "engorda" de praias, combatendo a erosão costeira.</p>
-                                </div>
-                            </div>
-                            <!-- Produto 4 -->
-                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
-                                <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXc8MkHwWgChHN8bMr91Qj9_TT65jymZNCjegMEfeh3dgY_ClEPAs7TxsqlSHkkRa9ESGBJuzaBLpe2m_-ZKUKFLlkhcb06uwUd1r9SXZuHMnPXJP33dF6Au09fAoefWYGLNbhWYpy2yG0nYjOrOCMhLG4I-w3DsikzJI_ekEYqLgT-_9RgLtA?key=zlBde046Y4kuP96xAFUaRw" alt="Sub-base para estradas" class="w-full h-56 object-cover">
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Sub-base para Estradas</h4>
-                                    <p class="text-text-secondary">Após tratamento, o sedimento pode compor a camada de sub-base de vias e pátios, reduzindo a necessidade de extração de areia e brita.</p>
-                                </div>
-                            </div>
-                            <!-- Produto 5 -->
-                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
-                                <img src="https://p.turbosquid.com/ts-thumb/In/EdMoZt/HH6TGkum/preview_00/jpg/1524726891/600x600/fit_q87/f50ff3300ce9beea42ec57e38187ae591250e324/preview_00.jpg" alt="Artefatos de concreto como bancos e vasos" class="w-full h-56 object-cover">
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Mobiliário Urbano</h4>
-                                    <p class="text-text-secondary">Produção de bancos de praça, vasos, meios-fios e outros artefatos de concreto para uso em espaços públicos, aliando durabilidade e sustentabilidade.</p>
-                                </div>
-                            </div>
-                            <!-- Produto 6 -->
-                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
-                                <img src="https://espacoecologico.com.br/wp-content/uploads/2022/12/argamassa.jpg" alt="Argamassa sustentável" class="w-full h-56 object-cover">
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Argamassa Sustentável</h4>
-                                    <p class="text-text-secondary">A fração fina do sedimento pode ser incorporada a argamassas para assentamento e revestimento, diminuindo o uso de cimento.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
             `;
         }
@@ -1007,6 +1181,7 @@
                     {id: 'Viabilidade', content: 'Fase 1: Viabilidade'},
                     {id: 'Piloto', content: 'Fase 2: Piloto'},
                     {id: 'Escala', content: 'Fase 3: Escala'},
+                    {id: 'Operação', content: 'Fase 4: Operação'},
                  ]);
 
                 const options = {
@@ -1017,7 +1192,10 @@
                     zoomMin: 1000 * 60 * 60 * 24 * 30, // 1 mês
                     zoomMax: 1000 * 60 * 60 * 24 * 365 * 3, // 3 anos
                 };
-                new vis.Timeline(container, items, groups, options);
+                const timeline = new vis.Timeline(container, items, groups, options);
+                timeline.addCustomTime(new Date(), 'today-marker');
+                timeline.setCustomTimeTitle('Hoje', 'today-marker');
+                timeline.fit();
             }
 
             // Tasks Chart (Doughnut)
@@ -1027,6 +1205,33 @@
                     acc[task.status] = (acc[task.status] || 0) + 1;
                     return acc;
                 }, {});
+
+                const totalTasks = Object.values(statusCounts).reduce((sum, count) => sum + count, 0);
+
+                const centerTextPlugin = {
+                    id: 'centerText',
+                    afterDraw: (chart) => {
+                        if (chart.data.datasets[0].data.length === 0) return;
+                        const ctx = chart.ctx;
+                        const {top, right, bottom, left, width, height} = chart.chartArea;
+                        ctx.save();
+                        
+                        ctx.font = 'bold 2.5rem Inter, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillStyle = 'var(--color-text-primary)';
+                        const text = totalTasks.toString();
+                        const textX = width / 2 + left;
+                        const textY = height / 2 + top - 10;
+                        ctx.fillText(text, textX, textY);
+                        
+                        ctx.font = '0.875rem Inter, sans-serif';
+                        ctx.fillStyle = 'var(--color-text-secondary)';
+                        const subText = 'Total de Tarefas';
+                        ctx.fillText(subText, textX, textY + 30);
+                        ctx.restore();
+                    }
+                };
 
                 new Chart(ctx, {
                     type: 'doughnut',
@@ -1041,14 +1246,85 @@
                                 '#9CA3AF', // A Fazer (gray-400)
                             ],
                             borderColor: 'var(--color-surface)',
-                            borderWidth: 4
+                            borderWidth: 4,
+                            cutout: '70%'
                         }]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
                                 position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    boxWidth: 15,
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + ' tarefa(s)';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    plugins: [centerTextPlugin]
+                });
+            }
+
+            // Actors Chart (Horizontal Bar)
+            if (document.getElementById('actors-chart')) {
+                const ctx = document.getElementById('actors-chart').getContext('2d');
+                
+                const actorTaskCounts = db.actors.map(actor => {
+                    const count = db.tasks.filter(task => task.assignedTo.includes(actor.id)).length;
+                    return { name: actor.name, count: count };
+                }).filter(actor => actor.count > 0)
+                .sort((a, b) => a.count - b.count);
+
+                const actorLabels = actorTaskCounts.map(a => a.name);
+                const actorData = actorTaskCounts.map(a => a.count);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: actorLabels,
+                        datasets: [{
+                            label: 'Nº de Tarefas',
+                            data: actorData,
+                            backgroundColor: 'rgba(111, 179, 110, 0.6)',
+                            borderColor: 'rgba(111, 179, 110, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
                             }
                         }
                     }
@@ -1233,4 +1509,3 @@
     </script>
 </body>
 </html>
-
