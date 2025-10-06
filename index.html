@@ -3,493 +3,1233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sedimento Vivo - Uma Proposta para a Ferroport</title>
+    <title>Plataforma de Governança - Sedimentados</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Map Libs -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Chart Lib -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Timeline Lib -->
+    <script src="https://cdn.jsdelivr.net/npm/vis-timeline@7.7.3/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/vis-timeline@7.7.3/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+
     <style>
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --color-primary: #6fb36e;
+            --color-background: #eef7ea;
+            --color-surface: #f8f3e9;
+            --color-text-primary: #12190f;
+            --color-text-secondary: #0e0b09;
         }
         body {
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
             font-family: 'Inter', sans-serif;
         }
-        .hero-bg {
-            background-color: #f0f4f8;
-            background-image: 
-                linear-gradient(45deg, #e1e8f0 25%, transparent 25%), 
-                linear-gradient(-45deg, #e1e8f0 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #e1e8f0 75%),
-                linear-gradient(-45deg, transparent 75%, #e1e8f0 75%);
-            background-size: 20px 20px;
+        .bg-primary { background-color: var(--color-primary); }
+        .bg-surface { background-color: var(--color-surface); }
+        .text-primary { color: var(--color-text-primary); }
+        .text-secondary { color: var(--color-text-secondary); }
+        .border-primary { border-color: var(--color-primary); }
+        
+        .nav-link {
+            transition: all 0.3s ease;
         }
-        .calculator-card {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        .nav-link.active {
+            background-color: var(--color-primary);
             color: white;
+            font-weight: 600;
         }
-        .impact-number, .counter {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.1;
+        .nav-link:not(.active):hover {
+            background-color: #eef7ea;
         }
-        .cta-button {
-            transition: all 0.3s ease;
+
+        /* Kanban Styles */
+        .kanban-column {
+            min-height: 400px;
         }
-        .cta-button:hover {
+        .kanban-card {
+            cursor: pointer; /* Changed to pointer to indicate clickability */
+            transition: all 0.2s ease-in-out;
+        }
+        .kanban-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        /* Estilos para a seção operacional */
-        .step-container {
-            position: relative;
-            padding-left: 50px;
-            padding-bottom: 2.5rem;
+        .kanban-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
-        .step-container:last-child {
-            padding-bottom: 0;
+        .drop-zone {
+            transition: background-color 0.3s ease;
         }
-        .step-icon {
-            position: absolute;
-            left: -1px;
-            top: 0;
-            width: 50px;
-            height: 50px;
-            background: white;
-            border: 4px solid #dbeafe; /* blue-100 */
+        .drop-zone.drag-over {
+            background-color: #d1fae5; /* Tailwind green-100 */
+        }
+        .actor-avatar {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+            object-fit: cover;
+            border: 2px solid white;
         }
-        .step-container:hover .step-icon {
-            border-color: #2563eb; /* blue-600 */
-            transform: scale(1.1);
+        .actor-avatar:not(:first-child) {
+            margin-left: -12px;
         }
-        .step-line {
-            position: absolute;
-            left: 23px;
-            top: 50px;
-            width: 4px;
-            height: calc(100% - 50px);
-            background: #dbeafe; /* blue-100 */
+
+        /* Vis-Timeline Customization */
+        .vis-timeline {
+            border: 2px solid var(--color-primary);
+            border-radius: 8px;
+            background-color: var(--color-surface);
         }
-        .step-container:last-child .step-line {
-            display: none;
+        .vis-item {
+            background-color: var(--color-primary);
+            border-color: #5a9d5a;
+            color: white;
+            border-radius: 5px;
         }
-        .step-content {
-            cursor: pointer;
+        .vis-item.vis-selected {
+            background-color: #5a9d5a;
+            border-color: var(--color-text-primary);
         }
-        .step-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out, margin-top 0.5s ease-out;
+        .vis-time-axis .vis-grid.vis-odd {
+            background: #f8f3e9;
         }
-        /* Animação de fade-in */
-        .fade-in-section {
+
+        /* Modal Styles */
+        #task-modal, #actor-modal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
         }
-        .fade-in-section.is-visible {
+        #task-modal.visible, #actor-modal.visible {
             opacity: 1;
-            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #task-modal .modal-content, #actor-modal .modal-content {
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+        #task-modal.visible .modal-content, #actor-modal.visible .modal-content {
+            transform: scale(1);
+        }
+        
+        /* Profile Dropdown transition */
+        #profile-dropdown {
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="antialiased">
 
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-blue-800">Sedimento Vivo</h1>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#problema" class="text-gray-600 hover:text-blue-600">O Desafio</a>
-                <a href="#solucao" class="text-gray-600 hover:text-blue-600">Nossa Solução</a>
-                <a href="#operacional" class="text-gray-600 hover:text-blue-600">Implementação</a>
-                <a href="#produtos" class="text-gray-600 hover:text-blue-600">Aplicações</a>
-                <a href="#impacto" class="text-gray-600 hover:text-blue-600">Impacto</a>
-                <a href="#contato" class="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-700 cta-button">Faça Parte</a>
-            </nav>
-            <button class="md:hidden text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-            </button>
-        </div>
-    </header>
+    <div id="app" class="flex flex-col min-h-screen">
+        <!-- Header -->
+        <header class="bg-surface shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Logo and Title -->
+                    <div class="flex items-center">
+                        <img src="Logo.svg" alt="Logo Sedimentados" class="h-12 w-auto">
+                    </div>
+                    
+                    <!-- Desktop Nav -->
+                    <nav class="hidden md:flex space-x-2 bg-background p-1 rounded-full">
+                        <a href="#dashboard" class="nav-link px-4 py-2 rounded-full text-sm">Dashboard de Impacto</a>
+                        <a href="#kanban" class="nav-link px-4 py-2 rounded-full text-sm">Kanban do Projeto</a>
+                        <a href="#actors" class="nav-link px-4 py-2 rounded-full text-sm">Atores Envolvidos</a>
+                        <a href="#deliverables" class="nav-link px-4 py-2 rounded-full text-sm">Entregáveis</a>
+                    </nav>
 
-    <!-- O Desafio (Nova Seção de Abertura) -->
-    <section id="problema" class="hero-bg py-20 md:py-28">
-        <div class="container mx-auto px-6 fade-in-section">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight">O Desafio</h2>
-                <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">A cada dois anos, a dragagem de manutenção da Ferroport gera um volume colossal de sedimento. A prática atual, embora licenciada, representa um ciclo de desperdício com profundos impactos ambientais, financeiros e sociais.</p>
+                    <!-- Right side: Profile and Mobile Menu Button -->
+                    <div class="flex items-center space-x-2">
+                         <!-- Profile Dropdown -->
+                        <div class="relative">
+                            <button id="profile-button" class="block transition-transform duration-200 hover:scale-110 focus:outline-none">
+                                <img id="current-user-avatar" src="" alt="Avatar do usuário" class="h-10 w-10 rounded-full border-2 border-primary object-cover">
+                            </button>
+                            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-20 py-1 origin-top-right transform opacity-0 scale-95">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meu Perfil</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
+                                <div class="border-t border-gray-100"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sair</a>
+                            </div>
+                        </div>
+
+                         <!-- Mobile Menu Button -->
+                        <div class="md:hidden">
+                            <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+                                <span class="sr-only">Abrir menu principal</span>
+                                <svg id="menu-icon-open" class="h-6 w-6 block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                                <svg id="menu-icon-close" class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 md:p-12 rounded-2xl shadow-xl">
-                <div class="lg:w-1/2">
-                    <img src="https://portogente.com.br/images/portopedia/2017/dragagem-fig-1.jpg" alt="Visualização do descarte de sedimento no mar" class="rounded-lg shadow-lg">
-                </div>
-                <div class="lg:w-1/2 space-y-6">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 bg-red-100 text-red-600 rounded-full h-12 w-12 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold text-gray-800">Desperdício de Recurso Valioso</h4>
-                            <p class="text-gray-600 mt-1">
-                                Até <strong class="text-2xl font-bold text-red-600"><span class="counter" data-target="800000">0</span></strong> toneladas de sedimento são <strong class="font-semibold">100% descartadas em "bota-fora" marítimo</strong>. Um recurso com imenso potencial para a construção civil é simplesmente jogado fora.
-                            </p>
-                        </div>
-                    </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-surface shadow-lg">
+                <nav class="flex flex-col space-y-1 px-2 pt-2 pb-3">
+                    <a href="#dashboard" class="nav-link text-gray-700 hover:bg-background block px-3 py-2 rounded-md text-base font-medium">Dashboard de Impacto</a>
+                    <a href="#kanban" class="nav-link text-gray-700 hover:bg-background block px-3 py-2 rounded-md text-base font-medium">Kanban do Projeto</a>
+                    <a href="#actors" class="nav-link text-gray-700 hover:bg-background block px-3 py-2 rounded-md text-base font-medium">Atores Envolvidos</a>
+                    <a href="#deliverables" class="nav-link text-gray-700 hover:bg-background block px-3 py-2 rounded-md text-base font-medium">Entregáveis</a>
+                </nav>
+            </div>
+        </header>
 
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 bg-blue-100 text-blue-600 rounded-full h-12 w-12 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold text-gray-800">Impacto no Ecossistema Marinho</h4>
-                            <p class="text-gray-600 mt-1">
-                                O descarte gera plumas de sedimento que <strong class="font-semibold">aumentam a turbidez da água</strong>, prejudicando o fitoplâncton, e podem <strong class="font-semibold">sufocar a vida no fundo do mar</strong>, afetando a base da cadeia alimentar local.
-                            </p>
-                        </div>
-                    </div>
 
-                    <div class="flex items-start gap-4">
-                         <div class="flex-shrink-0 bg-yellow-100 text-yellow-600 rounded-full h-12 w-12 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v.01M12 18v-2m0-2v-2m0-2v-2m0-2V7m0 0V6" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold text-gray-800">Pegada de Carbono e Custo Financeiro</h4>
-                            <p class="text-gray-600 mt-1">
-                                A operação de dragagem e transporte do material consome uma <strong class="font-semibold">grande quantidade de combustível</strong>, emitindo gases de efeito estufa e representando um <strong class="font-semibold">custo operacional de milhões</strong> que poderia ser convertido em investimento.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Main Content -->
+        <main id="main-content" class="flex-grow container mx-auto p-4 sm:p-6 lg:p-8">
+            <!-- Pages will be rendered here -->
+        </main>
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div id="task-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-[100] hidden items-center justify-center p-4">
+        <div class="modal-content bg-surface rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div id="task-modal-inner-content" class="p-6 sm:p-8 overflow-y-auto">
+                <!-- Content will be injected by JS -->
             </div>
         </div>
-    </section>
-
-    <!-- Nossa Solução -->
-    <section id="solucao" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6 fade-in-section">
-            <div class="text-center mb-12">
-                <h3 class="text-sm font-bold uppercase text-blue-600">Nossa Solução</h3>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Uma Plataforma de Triplo Impacto</h2>
-                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Propomos um framework de economia circular que transforma o sedimento de resíduo em recurso, gerando valor nos pilares Ambiental, Social e de Governança.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div class="bg-green-100 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 border-4 border-green-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <h4 class="text-xl font-bold mb-2">Impacto Ambiental</h4>
-                    <p class="text-gray-600">Alinhamento com a meta "Aterro Zero", redução da pegada de carbono ao evitar o descarte no mar, conservação de recursos naturais (areia) e aumento da resiliência costeira da região.</p>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div class="bg-blue-100 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 border-4 border-blue-200">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                    </div>
-                    <h4 class="text-xl font-bold mb-2">Impacto Social</h4>
-                    <p class="text-gray-600">Geração de empregos e renda na cadeia produtiva dos ecomateriais, melhoria da infraestrutura urbana e acesso a moradias dignas para a comunidade de São João da Barra.</p>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div class="bg-indigo-100 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 border-4 border-indigo-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                    </div>
-                    <h4 class="text-xl font-bold mb-2">Inovação & Governança</h4>
-                    <p class="text-gray-600">Transformação de um custo operacional em um ativo de valor, fortalecimento da marca e da licença social para operar, e fomento à P&D através de parcerias com universidades.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção Operacional Interativa -->
-    <section id="operacional" class="py-20 bg-white">
-        <div class="container mx-auto px-6 fade-in-section">
-            <div class="text-center mb-16">
-                <h3 class="text-sm font-bold uppercase text-blue-600">Implementação Faseada</h3>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Nosso Roteiro para a Transformação</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Um plano pragmático alinhado aos ciclos de dragagem, com resultados tangíveis a curto e médio prazo. Clique em cada fase para saber mais.</p>
-            </div>
-            <div class="max-w-3xl mx-auto">
-                <!-- Passo 1 -->
-                <div class="step-container">
-                    <div class="step-line"></div>
-                    <div class="step-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    </div>
-                    <div class="step-content pl-8" onclick="toggleDetails('details1')">
-                        <h4 class="text-xl font-bold text-gray-800 mb-1">Fase 1: P&D e Parcerias (Ano 1)</h4>
-                        <p class="text-gray-600">Construindo a base para a inovação e a cooperação.</p>
-                        <div id="details1" class="step-details">
-                            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
-                                <li><strong>Parcerias Estratégicas:</strong> Firmar convênios com universidades (UENF, IFFluminense) para P&D e com empresas locais de artefatos de cimento para produção.</li>
-                                <li><strong>Certificação Técnica:</strong> Realizar ensaios laboratoriais com o sedimento para garantir conformidade com as normas ABNT para materiais de construção.</li>
-                                <li><strong>Fomento a Empresas Juniores:</strong> Incentivar a criação de EJs nas universidades parceiras para desenvolver e otimizar os métodos de transformação do sedimento.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Passo 2 -->
-                <div class="step-container">
-                    <div class="step-line"></div>
-                    <div class="step-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
-                    </div>
-                    <div class="step-content pl-8" onclick="toggleDetails('details2')">
-                        <h4 class="text-xl font-bold text-gray-800 mb-1">Fase 2: Projeto Piloto (Ano 2)</h4>
-                        <p class="text-gray-600">Validando o conceito e demonstrando o impacto.</p>
-                         <div id="details2" class="step-details">
-                            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
-                                <li><strong>Produção Piloto:</strong> Utilizar o material do próximo ciclo de dragagem para a primeira produção em escala piloto com os parceiros definidos.</li>
-                                <li><strong>Projeto de Demonstração:</strong> Executar uma obra simbólica, como a pavimentação de uma praça ou a construção de um muro comunitário, para validar a logística e a durabilidade.</li>
-                                <li><strong>Divulgação e Engajamento:</strong> Comunicar os resultados do piloto para a comunidade e stakeholders, gerando visibilidade e apoio para a próxima fase.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Passo 3 -->
-                <div class="step-container">
-                    <div class="step-icon">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                    </div>
-                    <div class="step-content pl-8" onclick="toggleDetails('details3')">
-                        <h4 class="text-xl font-bold text-gray-800 mb-1">Fase 3: Escalonamento (Ano 3+)</h4>
-                        <p class="text-gray-600">Ampliando o impacto e consolidando o legado.</p>
-                         <div id="details3" class="step-details">
-                            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
-                                <li><strong>Produção em Larga Escala:</strong> Aumentar a produção para atender a projetos de maior impacto, como o fornecimento para o programa habitacional de São João da Barra.</li>
-                                <li><strong>Implementação da Resiliência Costeira:</strong> Iniciar o primeiro projeto de alimentação artificial de praias, em parceria com o governo estadual e municipal.</li>
-                                <li><strong>Monitoramento e Relatório de Impacto:</strong> Medir e reportar continuamente os benefícios ESG gerados, consolidando a liderança da Ferroport em sustentabilidade.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Produtos Gerados -->
-    <section id="produtos" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6 fade-in-section">
-            <div class="text-center mb-12">
-                <h3 class="text-sm font-bold uppercase text-blue-600">Produtos e Aplicações</h3>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Um universo de possibilidades sustentáveis.</h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Produto 1 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
-                    <img src="https://www.amigoconstrutor.com.br/dw/image/v2/BHFQ_PRD/on/demandware.static/-/Library-Sites-AmigoConstrutorSharedLibrary/default/dw2e6469bd/IMAGENS-BLOG/homem-construindo-tijolo-ecologico.jpg" alt="Tijolo Ecológico feito com sedimento" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold mb-2">Tijolo Ecológico</h4>
-                        <p class="text-gray-600">Resistente e com ótimo isolamento térmico, utiliza o sedimento como agregado, reduzindo o consumo de cimento e o custo final.</p>
-                    </div>
-                </div>
-                <!-- Produto 2 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
-                    <img src="https://blocosdeconcretoarttraco.com.br/uploads/paver-para-calcada.jpg" alt="Bloco intertravado para pavimentação" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold mb-2">Bloco de Pavimentação</h4>
-                        <p class="text-gray-600">Ideal para calçadas, praças e ruas de baixo tráfego. Uma solução durável e permeável para a infraestrutura urbana da região.</p>
-                    </div>
-                </div>
-                <!-- Produto 3 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
-                    <img src="https://jangadashow.com.br/wp-content/uploads/2023/11/3QbAI0W-1024x576.jpg" alt="Areia para alimentação de praias" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold mb-2">Resiliência Costeira</h4>
-                        <p class="text-gray-600">A fração arenosa do sedimento, de alta compatibilidade, é ideal para projetos de "engorda" de praias, combatendo a erosão costeira.</p>
-                    </div>
-                </div>
-                 <!-- Produto 4 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
-                    <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXc8MkHwWgChHN8bMr91Qj9_TT65jymZNCjegMEfeh3dgY_ClEPAs7TxsqlSHkkRa9ESGBJuzaBLpe2m_-ZKUKFLlkhcb06uwUd1r9SXZuHMnPXJP33dF6Au09fAoefWYGLNbhWYpy2yG0nYjOrOCMhLG4I-w3DsikzJI_ekEYqLgT-_9RgLtA?key=zlBde046Y4kuP96xAFUaRw" alt="Sub-base para estradas" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold mb-2">Sub-base para Estradas</h4>
-                        <p class="text-gray-600">Após tratamento, o sedimento pode compor a camada de sub-base de vias e pátios, reduzindo a necessidade de extração de areia e brita.</p>
-                    </div>
-                </div>
-                 <!-- Produto 5 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
-                    <img src="https://p.turbosquid.com/ts-thumb/In/EdMoZt/HH6TGkum/preview_00/jpg/1524726891/600x600/fit_q87/f50ff3300ce9beea42ec57e38187ae591250e324/preview_00.jpg" alt="Artefatos de concreto como bancos e vasos" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold mb-2">Mobiliário Urbano</h4>
-                        <p class="text-gray-600">Produção de bancos de praça, vasos, meios-fios e outros artefatos de concreto para uso em espaços públicos, aliando durabilidade e sustentabilidade.</p>
-                    </div>
-                </div>
-                 <!-- Produto 6 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-white">
-                    <img src="https://espacoecologico.com.br/wp-content/uploads/2022/12/argamassa.jpg" alt="Argamassa sustentável" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold mb-2">Argamassa Sustentável</h4>
-                        <p class="text-gray-600">A fração fina do sedimento pode ser incorporada a argamassas para assentamento e revestimento, diminuindo o uso de cimento.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Calculadora de Impacto -->
-    <section id="impacto" class="py-20">
-        <div class="container mx-auto px-6 fade-in-section">
-            <div class="calculator-card rounded-xl p-8 md:p-12 shadow-2xl">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-bold">Calculadora de Impacto</h2>
-                    <p class="mt-3 text-lg text-blue-200 max-w-2xl mx-auto">Veja o potencial de uma única dragagem. Simule a quantidade de casas populares que podemos ajudar a construir.</p>
-                </div>
-
-                <div class="max-w-md mx-auto mb-10">
-                    <label for="casas" class="block text-lg font-medium mb-2 text-blue-100">Quantas casas podemos construir?</label>
-                    <input type="range" id="casas" name="casas" min="10" max="500" value="100" class="w-full h-3 bg-blue-400 rounded-lg appearance-none cursor-pointer range-lg">
-                    <div class="flex justify-between text-xs text-blue-200 mt-1">
-                        <span>10</span>
-                        <span class="font-bold text-white text-lg -mt-1"><span id="casas-valor">100</span> casas</span>
-                        <span>500</span>
-                    </div>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p id="impacto-sedimento" class="impact-number">15.000</p>
-                        <p class="text-blue-200">Toneladas de sedimento reutilizadas</p>
-                    </div>
-                    <div>
-                        <p id="impacto-co2" class="impact-number">3.000</p>
-                        <p class="text-blue-200">Toneladas de CO₂ evitadas</p>
-                    </div>
-                    <div>
-                        <p id="impacto-familias" class="impact-number">100</p>
-                        <p class="text-blue-200">Famílias diretamente beneficiadas</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Seção Explicativa da Calculadora -->
-            <div class="max-w-4xl mx-auto mt-12 text-gray-700">
-                <h3 class="text-2xl font-bold text-center mb-6">Como chegamos a estes números?</h3>
-                <p class="text-center text-gray-600 mb-8">Nossos cálculos são baseados em médias da indústria da construção civil e estudos de caso de projetos de economia circular. Eles servem para ilustrar o imenso potencial do projeto "Sedimento Vivo".</p>
-                <div class="space-y-6">
-                    <div class="bg-white p-6 rounded-lg border border-gray-200">
-                        <h4 class="text-lg font-bold text-blue-800">1. Toneladas de Sedimento Reutilizadas</h4>
-                        <p class="mt-2">O cálculo considera a quantidade média de material necessário para a alvenaria de uma casa de padrão popular (aproximadamente 50m²). Estimamos que cada casa construída com nossos tijolos ecológicos utiliza cerca de <strong class="font-semibold">150 toneladas de sedimento</strong>, que antes seria descartado. A fórmula é: <code class="bg-gray-200 p-1 rounded">Nº de Casas x 150</code>.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg border border-gray-200">
-                        <h4 class="text-lg font-bold text-blue-800">2. Toneladas de CO₂ Evitadas</h4>
-                        <p class="mt-2">Este valor reflete um duplo benefício ambiental. Primeiro, a substituição do cimento convencional (cuja produção é altamente poluente) e a eliminação da queima de tijolos de argila reduzem a pegada de carbono da construção. Segundo, evitamos as emissões de gases de efeito estufa geradas pelo transporte do sedimento até um aterro ("bota-fora"). A estimativa é de uma economia de <strong class="font-semibold">30 toneladas de CO₂ por casa</strong>. A fórmula é: <code class="bg-gray-200 p-1 rounded">Nº de Casas x 30</code>.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg border border-gray-200">
-                        <h4 class="text-lg font-bold text-blue-800">3. Famílias Diretamente Beneficiadas</h4>
-                        <p class="mt-2">Este é o nosso impacto social mais direto. A métrica é simples: para cada casa construída ou reformada com os materiais do projeto, consideramos que <strong class="font-semibold">uma família</strong> tem sua qualidade de vida e condição de moradia melhoradas.</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
+    </div>
     
-    <!-- Contato/CTA -->
-    <footer id="contato" class="bg-gray-800 text-white py-16">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-4">Vamos transformar juntos?</h2>
-            <p class="text-gray-300 max-w-2xl mx-auto mb-8">O projeto Sedimento Vivo está aberto a novos parceiros, ideias e colaboradores. Seja uma empresa, uma instituição de ensino ou um membro da comunidade, sua participação é fundamental para construirmos este legado.</p>
-            <a href="mailto:contato@sedimentovivo.com" class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-700 cta-button inline-block">Entre em Contato</a>
-            <div class="mt-12 text-gray-400">
-                <p>Uma proposta de inovação e sustentabilidade da Equipe 34 para a Ferroport.</p>
+    <!-- Actor Detail Modal -->
+    <div id="actor-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-[100] hidden items-center justify-center p-4">
+        <div class="modal-content bg-surface rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div id="actor-modal-inner-content" class="p-6 sm:p-8 overflow-y-auto">
+                <!-- Content will be injected by JS -->
             </div>
         </div>
-    </footer>
+    </div>
 
-    <script>
-        // Animação de fade-in ao rolar
-        const fadeInSections = document.querySelectorAll('.fade-in-section');
-        const sectionObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    // Animação dos contadores dentro da seção visível
-                    const counters = entry.target.querySelectorAll('.counter');
-                    counters.forEach(counter => {
-                       animateCount(counter);
-                    });
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
 
-        fadeInSections.forEach(section => {
-            sectionObserver.observe(section);
-        });
+    <!-- JSON Database -->
+    <script id="db-json" type="application/json">
+{
+  "config": {
+    "theme": {
+      "colors": {
+        "primary": "#6fb36e",
+        "background": "#eef7ea",
+        "surface": "#f8f3e9",
+        "textPrimary": "#12190f",
+        "textSecondary": "#0e0b09"
+      }
+    },
+    "currentUser": {
+      "id": "user-ferroport-01",
+      "name": "Gestor de Sustentabilidade",
+      "avatarUrl": "https://i.pravatar.cc/150?u=user-ferroport-01"
+    }
+  },
+  "actors": [
+    {
+      "id": "actor-01",
+      "name": "Comitê Gestor Ferroport",
+      "type": "Grupo Interno",
+      "location": {
+        "name": "Porto do Açu",
+        "lat": -21.8219,
+        "lng": -41.0186
+      }
+    },
+    {
+      "id": "actor-02",
+      "name": "Universidade Estadual do Norte Fluminense (UENF)",
+      "type": "Academia",
+      "location": {
+        "name": "Campos dos Goytacazes",
+        "lat": -21.7554,
+        "lng": -41.3259
+      }
+    },
+    {
+      "id": "actor-03",
+      "name": "Prefeitura de São João da Barra",
+      "type": "Poder Público",
+      "location": {
+        "name": "São João da Barra",
+        "lat": -21.6401,
+        "lng": -41.051
+      }
+    },
+    {
+      "id": "actor-04",
+      "name": "INEA",
+      "type": "Órgão Regulador",
+      "location": {
+        "name": "Rio de Janeiro",
+        "lat": -22.9068,
+        "lng": -43.1729
+      }
+    },
+    {
+      "id": "actor-05",
+      "name": "Comunidade de Pipeiras",
+      "type": "Comunidade",
+      "location": {
+        "name": "Pipeiras, SJB",
+        "lat": -21.668,
+        "lng": -41.060
+      }
+    },
+    {
+      "id": "actor-06",
+      "name": "Cooperativa de Construtores Locais",
+      "type": "Cooperativa",
+      "location": {
+        "name": "Açu, SJB",
+        "lat": -21.861,
+        "lng": -41.026
+      }
+    },
+    {
+      "id": "actor-07",
+      "name": "SENAI",
+      "type": "Educação",
+      "location": {
+        "name": "Campos dos Goytacazes",
+        "lat": -21.761,
+        "lng": -41.332
+      }
+    }
+  ],
+  "project": {
+    "id": "proj-sedvivo-01",
+    "name": "Sedimento Vivo",
+    "vision": "Transformar o maior resíduo da Ferroport - o sedimento de dragagem - de um passivo operacional e ambiental em um ativo estratégico de triplo impacto: Ambiental, Social e de Governança.",
+    "phases": [
+      {
+        "id": "phase-01",
+        "name": "Fase 1: Estruturação e Viabilidade",
+        "objective": "Validar a viabilidade técnica, regulatória e econômica, formando a governança do projeto e as parcerias estratégicas iniciais.",
+        "kanbanColumns": ["A Fazer", "Em Andamento", "Concluído"]
+      },
+      {
+        "id": "phase-02",
+        "name": "Fase 2: Projeto Piloto e Validação",
+        "objective": "Testar a solução em uma escala controlada, produzindo os primeiros lotes de materiais e executando uma obra demonstrativa.",
+        "kanbanColumns": ["A Fazer", "Em Andamento", "Concluído"]
+      },
+      {
+        "id": "phase-03",
+        "name": "Fase 3: Escalonamento Operacional",
+        "objective": "Construir a infraestrutura definitiva, capacitar a mão de obra local e iniciar a produção em larga escala.",
+        "kanbanColumns": ["A Fazer", "Em Andamento", "Concluído"]
+      },
+      {
+        "id": "phase-04",
+        "name": "Fase 4: Operação Contínua",
+        "objective": "Consolidar a operação, monitorar impactos e promover a inovação contínua.",
+        "kanbanColumns": ["A Fazer", "Em Andamento", "Concluído"]
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "id": "task-001",
+      "phaseId": "phase-01",
+      "title": "Caracterização Técnica do Sedimento",
+      "description": "Coletar e analisar amostras para garantir conformidade com as normas ABNT e CONAMA.",
+      "status": "Concluído",
+      "assignedTo": ["actor-01", "actor-02"],
+      "startDate": "2025-01-15",
+      "endDate": "2025-04-30",
+      "deliverableIds": ["del-001"],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-002",
+      "phaseId": "phase-01",
+      "title": "Formalização de Parcerias",
+      "description": "Elaborar e assinar Memorandos de Entendimento (MoU) com Prefeituras e Universidades.",
+      "status": "Concluído",
+      "assignedTo": ["actor-01", "actor-03"],
+      "startDate": "2025-03-01",
+      "endDate": "2025-06-15",
+      "deliverableIds": ["del-002"],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-003",
+      "phaseId": "phase-01",
+      "title": "Análise Regulatória e Licenciamento",
+      "description": "Iniciar diálogo com o INEA para avaliar os procedimentos de licenciamento ambiental.",
+      "status": "Em Andamento",
+      "assignedTo": ["actor-04"],
+      "startDate": "2025-05-01",
+      "endDate": "2025-09-30",
+      "deliverableIds": ["del-003"],
+      "kpiImpact": []
+    },
+    {
+      "id": "task-004",
+      "phaseId": "phase-02",
+      "title": "Produção dos Protótipos",
+      "description": "Produzir os primeiros 5.000 blocos e 1.000 m² de pavers em planta piloto.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-06"],
+      "startDate": "2025-10-01",
+      "endDate": "2025-12-31",
+      "deliverableIds": ["del-004"],
+      "kpiImpact": [
+        { "key": "sedimentReused_m3", "value": 5000, "label": "Sedimento Reutilizado (m³)" }
+      ]
+    },
+    {
+      "id": "task-005",
+      "phaseId": "phase-02",
+      "title": "Execução de Obra Demonstrativa",
+      "description": "Pavimentação de 500m de rua na comunidade de Pipeiras.",
+      "status": "A Fazer",
+      "assignedTo": ["actor-03", "actor-05"],
+      "startDate": "2026-01-15",
+      "endDate": "2026-03-15",
+      "deliverableIds": ["del-005"],
+      "kpiImpact": [
+        { "key": "familiesBenefited", "value": 40, "label": "Famílias Beneficiadas" },
+        { "key": "areaPaved_m2", "value": 2000, "label": "Área Pavimentada (m²)" },
+        { "key": "ghgAvoided_tCO2e", "value": 15, "label": "GEE Evitado (tCO₂e)" }
+      ]
+    },
+    {
+        "id": "task-006",
+        "phaseId": "phase-03",
+        "title": "Capacitação da Mão de Obra Local",
+        "description": "Programa de capacitação em parceria com o SENAI para 30 moradores locais.",
+        "status": "A Fazer",
+        "assignedTo": ["actor-07"],
+        "startDate": "2026-04-01",
+        "endDate": "2026-06-30",
+        "deliverableIds": [],
+        "kpiImpact": [
+          { "key": "peopleTrained", "value": 30, "label": "Pessoas Capacitadas" },
+          { "key": "jobsCreated", "value": 15, "label": "Empregos Gerados" }
+        ]
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "del-001",
+      "taskId": "task-001",
+      "name": "Relatório de Viabilidade Técnica",
+      "status": "Entregue",
+      "url": "/docs/relatorio-viabilidade.pdf"
+    },
+    {
+      "id": "del-002",
+      "taskId": "task-002",
+      "name": "MoUs Assinados",
+      "status": "Entregue",
+      "url": "/docs/mous-assinados.zip"
+    },
+    {
+      "id": "del-003",
+      "taskId": "task-003",
+      "name": "Parecer Jurídico-Regulatório",
+      "status": "Pendente",
+      "url": null
+    },
+    {
+      "id": "del-004",
+      "taskId": "task-004",
+      "name": "Protótipos com Laudos Técnicos",
+      "status": "Pendente",
+      "url": null
+    },
+    {
+      "id": "del-005",
+      "taskId": "task-005",
+      "name": "Relatório Fotográfico da Obra",
+      "status": "Pendente",
+      "url": null
+    }
+  ],
+  "dashboardData": {
+    "kpiSummary": [
+      { "key": "sedimentReused_m3", "value": 5000, "label": "Sedimento Reutilizado (m³)" },
+      { "key": "familiesBenefited", "value": 40, "label": "Famílias Beneficiadas" },
+      { "key": "jobsCreated", "value": 15, "label": "Empregos Gerados" },
+      { "key": "ghgAvoided_tCO2e", "value": 15, "label": "GEE Evitado (tCO₂e)" }
+    ],
+    "timelineEvents": [
+      { "id": "task-001", "phase": "Fase 1", "content": "Caracterização do Sedimento", "start": "2025-01-15", "end": "2025-04-30", "group": "Viabilidade" },
+      { "id": "task-002", "phase": "Fase 1", "content": "Formalização de Parcerias", "start": "2025-03-01", "end": "2025-06-15", "group": "Viabilidade" },
+      { "id": "task-003", "phase": "Fase 1", "content": "Análise Regulatória", "start": "2025-05-01", "end": "2025-09-30", "group": "Viabilidade" },
+      { "id": "task-004", "phase": "Fase 2", "content": "Produção dos Protótipos", "start": "2025-10-01", "end": "2025-12-31", "group": "Piloto" },
+      { "id": "task-005", "phase": "Fase 2", "content": "Obra Demonstrativa", "start": "2026-01-15", "end": "2026-03-15", "group": "Piloto" },
+      { "id": "task-006", "phase": "Fase 3", "content": "Capacitação Profissional", "start": "2026-04-01", "end": "2026-06-30", "group": "Escala" }
+    ],
+    "mapPoints": [
+       {
+        "id": "actor-01",
+        "name": "Ferroport (Sede do Projeto)",
+        "type": "Grupo Interno",
+        "position": [-21.8219, -41.0186],
+        "popup": "<strong>Comitê Gestor Ferroport</strong><br>Ponto central de governança do projeto Sedimento Vivo."
+      },
+      {
+        "id": "actor-03",
+        "name": "Prefeitura de São João da Barra",
+        "type": "Poder Público",
+        "position": [-21.6401, -41.051],
+        "popup": "<strong>Parceiro Chave</strong><br>Demanda de materiais para obras de infraestrutura e habitação social."
+      },
+      {
+        "id": "actor-05",
+        "name": "Comunidade de Pipeiras",
+        "type": "Comunidade",
+        "position": [-21.668, -41.060],
+        "popup": "<strong>Projeto Piloto</strong><br>Local da primeira obra demonstrativa de pavimentação comunitária."
+      }
+    ]
+  }
+}
+    </script>
 
-        // Animação dos contadores
-        const animateCount = (el) => {
-            const target = +el.getAttribute('data-target');
-            let count = 0;
-            const duration = 2000; // 2 segundos
-            const stepTime = Math.abs(Math.floor(duration / target)) || 1;
+    <script type="module">
+        // --- DATA INITIALIZATION ---
+        const db = JSON.parse(document.getElementById('db-json').textContent);
 
-            const timer = setInterval(() => {
-                const increment = Math.ceil(target / (duration / stepTime));
-                count = count + increment;
-                if (count >= target) {
-                    el.innerText = target.toLocaleString('pt-BR');
-                    clearInterval(timer);
-                } else {
-                    el.innerText = count.toLocaleString('pt-BR');
-                }
-            }, stepTime);
+        // --- APP STATE ---
+        const state = {
+            currentPage: '',
+            tasks: db.tasks,
         };
-        
-        // Script para a calculadora de impacto
-        const casasSlider = document.getElementById('casas');
-        const casasValor = document.getElementById('casas-valor');
-        const impactoSedimento = document.getElementById('impacto-sedimento');
-        const impactoCo2 = document.getElementById('impacto-co2');
-        const impactoFamilias = document.getElementById('impacto-familias');
 
-        const SEDIMENTO_POR_CASA = 150; 
-        const CO2_POR_CASA = 30;
-        
-        function updateImpacto() {
-            const numCasas = parseInt(casasSlider.value);
-            casasValor.textContent = numCasas;
-            impactoSedimento.textContent = (numCasas * SEDIMENTO_POR_CASA).toLocaleString('pt-BR');
-            impactoCo2.textContent = (numCasas * CO2_POR_CASA).toLocaleString('pt-BR');
-            impactoFamilias.textContent = numCasas;
+        // --- DOM ELEMENTS ---
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu .nav-link');
+        const taskModal = document.getElementById('task-modal');
+        const taskModalContent = document.getElementById('task-modal-inner-content');
+        const actorModal = document.getElementById('actor-modal');
+        const actorModalContent = document.getElementById('actor-modal-inner-content');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const profileButton = document.getElementById('profile-button');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+
+        // --- ROUTING ---
+        function navigateTo(hash) {
+            const page = hash.substring(1) || 'dashboard';
+            if (page === state.currentPage) return;
+            
+            state.currentPage = page;
+            updateNavLinks(page);
+            renderPage(page);
         }
 
-        casasSlider.addEventListener('input', updateImpacto);
-        document.addEventListener('DOMContentLoaded', updateImpacto);
-
-
-        // Script para a seção operacional interativa
-        function toggleDetails(elementId) {
-            const element = document.getElementById(elementId);
-            const allDetails = document.querySelectorAll('.step-details');
-
-            allDetails.forEach(detail => {
-                if (detail.id !== elementId) {
-                    detail.style.maxHeight = '0px';
-                    detail.style.marginTop = '0px';
+        function updateNavLinks(activePage) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                 if (link.href.endsWith(`#${activePage}`)) {
+                    link.classList.add('active');
+                    link.classList.remove('text-gray-700');
+                } else {
+                    link.classList.remove('active');
+                    link.classList.add('text-gray-700');
                 }
             });
+        }
 
-            if (element.style.maxHeight && element.style.maxHeight !== '0px') {
-                element.style.maxHeight = '0px';
-                element.style.marginTop = '0px';
-            } else {
-                element.style.maxHeight = element.scrollHeight + 'px';
-                element.style.marginTop = '1rem';
+        function renderPage(page) {
+            mainContent.innerHTML = ''; // Clear previous content
+            window.scrollTo(0, 0);
+
+            switch (page) {
+                case 'dashboard':
+                    mainContent.innerHTML = renderDashboard();
+                    initDashboardCharts();
+                    break;
+                case 'kanban':
+                    mainContent.innerHTML = renderKanban();
+                    initKanban();
+                    break;
+                case 'actors':
+                    mainContent.innerHTML = renderActorsPage();
+                    initActorsPage();
+                    break;
+                case 'deliverables':
+                    mainContent.innerHTML = renderDeliverablesPage();
+                    break;
+                default:
+                    mainContent.innerHTML = `<div class="text-center p-10"><h2 class="text-2xl font-bold">Página não encontrada</h2></div>`;
             }
         }
+        
+        // --- PAGE RENDERERS ---
+
+        function renderDashboard() {
+            const kpis = db.dashboardData.kpiSummary;
+            return `
+                <div class="space-y-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-text-primary">Dashboard de Impacto</h1>
+                        <p class="mt-2 text-text-secondary">Visão geral do progresso e impacto do projeto.</p>
+                    </div>
+                    
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${kpis.map(kpi => `
+                            <div class="bg-surface p-6 rounded-lg shadow-md border-l-4 border-primary">
+                                <p class="text-sm font-medium text-text-secondary">${kpi.label}</p>
+                                <p class="text-4xl font-bold mt-2" style="color: var(--color-primary);">${kpi.value.toLocaleString('pt-BR')}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Charts & Map -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 bg-surface p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-4">Linha do Tempo do Projeto</h3>
+                            <div id="timeline-container" style="height: 400px;"></div>
+                        </div>
+                        <div class="bg-surface p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-4">Distribuição de Tarefas</h3>
+                            <canvas id="tasks-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface p-6 rounded-lg shadow-md">
+                         <h3 class="text-lg font-semibold mb-4">Mapa de Atores e Impacto</h3>
+                         <div id="map" class="rounded-lg" style="height: 500px;"></div>
+                    </div>
+
+                    <!-- Produtos Gerados -->
+                    <section id="produtos">
+                        <div class="text-center mb-12">
+                            <h3 class="text-sm font-bold uppercase" style="color: var(--color-primary);">Produtos e Aplicações</h3>
+                            <h2 class="text-3xl md:text-4xl font-bold text-text-primary mt-2">Um universo de possibilidades sustentáveis.</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <!-- Produto 1 -->
+                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                <img src="https://www.amigoconstrutor.com.br/dw/image/v2/BHFQ_PRD/on/demandware.static/-/Library-Sites-AmigoConstrutorSharedLibrary/default/dw2e6469bd/IMAGENS-BLOG/homem-construindo-tijolo-ecologico.jpg" alt="Tijolo Ecológico feito com sedimento" class="w-full h-56 object-cover">
+                                <div class="p-6">
+                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Tijolo Ecológico</h4>
+                                    <p class="text-text-secondary">Resistente e com ótimo isolamento térmico, utiliza o sedimento como agregado, reduzindo o consumo de cimento e o custo final.</p>
+                                </div>
+                            </div>
+                            <!-- Produto 2 -->
+                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                <img src="https://blocosdeconcretoarttraco.com.br/uploads/paver-para-calcada.jpg" alt="Bloco intertravado para pavimentação" class="w-full h-56 object-cover">
+                                <div class="p-6">
+                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Bloco de Pavimentação</h4>
+                                    <p class="text-text-secondary">Ideal para calçadas, praças e ruas de baixo tráfego. Uma solução durável e permeável para a infraestrutura urbana da região.</p>
+                                </div>
+                            </div>
+                            <!-- Produto 3 -->
+                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                <img src="https://jangadashow.com.br/wp-content/uploads/2023/11/3QbAI0W-1024x576.jpg" alt="Areia para alimentação de praias" class="w-full h-56 object-cover">
+                                <div class="p-6">
+                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Resiliência Costeira</h4>
+                                    <p class="text-text-secondary">A fração arenosa do sedimento, de alta compatibilidade, é ideal para projetos de "engorda" de praias, combatendo a erosão costeira.</p>
+                                </div>
+                            </div>
+                            <!-- Produto 4 -->
+                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXc8MkHwWgChHN8bMr91Qj9_TT65jymZNCjegMEfeh3dgY_ClEPAs7TxsqlSHkkRa9ESGBJuzaBLpe2m_-ZKUKFLlkhcb06uwUd1r9SXZuHMnPXJP33dF6Au09fAoefWYGLNbhWYpy2yG0nYjOrOCMhLG4I-w3DsikzJI_ekEYqLgT-_9RgLtA?key=zlBde046Y4kuP96xAFUaRw" alt="Sub-base para estradas" class="w-full h-56 object-cover">
+                                <div class="p-6">
+                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Sub-base para Estradas</h4>
+                                    <p class="text-text-secondary">Após tratamento, o sedimento pode compor a camada de sub-base de vias e pátios, reduzindo a necessidade de extração de areia e brita.</p>
+                                </div>
+                            </div>
+                            <!-- Produto 5 -->
+                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                <img src="https://p.turbosquid.com/ts-thumb/In/EdMoZt/HH6TGkum/preview_00/jpg/1524726891/600x600/fit_q87/f50ff3300ce9beea42ec57e38187ae591250e324/preview_00.jpg" alt="Artefatos de concreto como bancos e vasos" class="w-full h-56 object-cover">
+                                <div class="p-6">
+                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Mobiliário Urbano</h4>
+                                    <p class="text-text-secondary">Produção de bancos de praça, vasos, meios-fios e outros artefatos de concreto para uso em espaços públicos, aliando durabilidade e sustentabilidade.</p>
+                                </div>
+                            </div>
+                            <!-- Produto 6 -->
+                            <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 bg-surface">
+                                <img src="https://espacoecologico.com.br/wp-content/uploads/2022/12/argamassa.jpg" alt="Argamassa sustentável" class="w-full h-56 object-cover">
+                                <div class="p-6">
+                                    <h4 class="text-xl font-bold mb-2 text-text-primary">Argamassa Sustentável</h4>
+                                    <p class="text-text-secondary">A fração fina do sedimento pode ser incorporada a argamassas para assentamento e revestimento, diminuindo o uso de cimento.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+        
+        function renderKanban() {
+            const phases = db.project.phases;
+            return `
+                <div>
+                    <h1 class="text-3xl font-bold text-text-primary">Kanban do Projeto: ${db.project.name}</h1>
+                    <p class="mt-2 text-text-secondary">${db.project.vision}</p>
+                </div>
+                
+                <div class="space-y-12 mt-8">
+                    ${phases.map(phase => `
+                        <section id="phase-${phase.id}">
+                            <h2 class="text-2xl font-semibold mb-4" style="color: var(--color-primary);">${phase.name}</h2>
+                            <p class="text-text-secondary mb-6">${phase.objective}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                ${phase.kanbanColumns.map(column => `
+                                    <div class="bg-surface rounded-lg shadow-inner p-4">
+                                        <h3 class="font-bold text-center text-text-secondary pb-3 border-b-2 mb-4">${column}</h3>
+                                        <div id="col-${phase.id}-${column.replace(/\s+/g, '-')}" class="kanban-column drop-zone space-y-4">
+                                            ${renderKanbanCards(phase.id, column)}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </section>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderKanbanCards(phaseId, status) {
+            return state.tasks
+                .filter(task => task.phaseId === phaseId && task.status === status)
+                .map(task => {
+                    const assignedActors = task.assignedTo.map(actorId => db.actors.find(a => a.id === actorId)).filter(Boolean);
+                    const deliverables = task.deliverableIds.map(delId => db.deliverables.find(d => d.id === delId)).filter(Boolean);
+                    
+                    return `
+                        <div id="${task.id}" class="kanban-card bg-white p-4 rounded-lg shadow" draggable="true">
+                            <h4 class="font-semibold text-text-primary">${task.title}</h4>
+                            <p class="text-sm text-text-secondary my-2 line-clamp-2">${task.description}</p>
+                            
+                            <!-- Deliverables -->
+                            ${deliverables.length > 0 ? `
+                                <div class="mt-3">
+                                    <h5 class="text-xs font-bold text-gray-500">ENTREGÁVEIS</h5>
+                                    <div class="flex flex-col space-y-1 mt-1">
+                                    ${deliverables.slice(0, 1).map(del => `
+                                        <div class="text-xs text-gray-600 flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                                            ${del.name}
+                                        </div>
+                                    `).join('')}
+                                    ${deliverables.length > 1 ? `<div class="text-xs text-gray-500">+${deliverables.length - 1} outro(s)</div>` : ''}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            <div class="flex justify-between items-center mt-4 pt-3 border-t">
+                                <div class="flex items-center">
+                                    ${assignedActors.map(actor => `
+                                        <img src="https://i.pravatar.cc/40?u=${actor.id}" title="${actor.name}" class="actor-avatar">
+                                    `).join('')}
+                                </div>
+                                <span class="text-xs font-semibold bg-primary/80 text-white px-2 py-1 rounded-full">${new Date(task.endDate).toLocaleDateString('pt-BR')}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+        }
+        
+        function renderActorsPage() {
+            return `
+                 <div>
+                    <h1 class="text-3xl font-bold text-text-primary">Atores Envolvidos</h1>
+                    <p class="mt-2 text-text-secondary">Pessoas e instituições que fazem o projeto acontecer.</p>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${db.actors.map(actor => `
+                        <div class="actor-card bg-surface p-5 rounded-lg shadow-md flex items-start space-x-4 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300" data-actor-id="${actor.id}">
+                            <img src="https://i.pravatar.cc/150?u=${actor.id}" alt="${actor.name}" class="h-16 w-16 rounded-full border-2 border-primary">
+                            <div>
+                                <h3 class="text-lg font-bold" style="color: var(--color-primary);">${actor.name}</h3>
+                                <p class="text-sm font-medium bg-primary/20 text-primary inline-block px-2 py-0.5 rounded-full my-1" style="background-color: rgba(111, 179, 110, 0.2); color: var(--color-primary);">${actor.type}</p>
+                                <p class="text-sm text-text-secondary flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                    </svg>
+                                    ${actor.location.name}
+                                </p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderDeliverablesPage() {
+             return `
+                 <div>
+                    <h1 class="text-3xl font-bold text-text-primary">Entregáveis do Projeto</h1>
+                    <p class="mt-2 text-text-secondary">Documentos, relatórios e produtos gerados pelas tarefas.</p>
+                </div>
+                <div class="mt-8 bg-surface rounded-lg shadow-md overflow-hidden">
+                    <table class="min-w-full">
+                        <thead style="background-color: rgba(111, 179, 110, 0.1);">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--color-primary);">Entregável</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--color-primary);">Tarefa Associada</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--color-primary);">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider" style="color: var(--color-primary);">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            ${db.deliverables.map(del => {
+                                const task = db.tasks.find(t => t.id === del.taskId);
+                                const statusClass = del.status === 'Entregue' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                                return `
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <p class="font-semibold text-text-primary">${del.name}</p>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <p class="text-sm text-text-secondary">${task ? task.title : 'N/A'}</p>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                                ${del.status}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            ${del.url ? `
+                                                <a href="${del.url}" target="_blank" class="hover:underline font-bold" style="color: var(--color-primary);">Ver Documento</a>
+                                            ` : `
+                                                <span class="text-gray-400">Indisponível</span>
+                                            `}
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+             `;
+        }
+
+        // --- MODAL LOGIC ---
+        function openTaskModal(taskId) {
+            const task = db.tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            const assignedActors = task.assignedTo.map(actorId => db.actors.find(a => a.id === actorId)).filter(Boolean);
+            const deliverables = task.deliverableIds.map(delId => db.deliverables.find(d => d.id === delId)).filter(Boolean);
+            const phase = db.project.phases.find(p => p.id === task.phaseId);
+
+            const statusColors = {
+                'Concluído': 'bg-green-100 text-green-800',
+                'Em Andamento': 'bg-yellow-100 text-yellow-800',
+                'A Fazer': 'bg-gray-200 text-gray-800',
+            };
+
+            taskModalContent.innerHTML = `
+                <div class="relative">
+                    <button id="close-modal-btn" class="absolute -top-2 -right-4 text-gray-400 hover:text-gray-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <div>
+                        <span class="text-sm font-semibold" style="color: var(--color-primary);">${phase ? phase.name : ''}</span>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-text-primary mt-1">${task.title}</h2>
+                    </div>
+
+                    <div class="mt-4 flex flex-wrap gap-4 items-center text-sm">
+                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[task.status] || 'bg-gray-100'}">
+                            ${task.status}
+                        </span>
+                        <div class="flex items-center text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>
+                            <span>Prazo: ${new Date(task.endDate).toLocaleDateString('pt-BR')}</span>
+                        </div>
+                    </div>
+
+                    <p class="text-text-secondary my-6">${task.description}</p>
+
+                    <div>
+                        <h4 class="font-semibold text-text-primary mb-3">Responsáveis</h4>
+                        <div class="flex flex-wrap gap-4">
+                            ${assignedActors.map(actor => `
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://i.pravatar.cc/40?u=${actor.id}" title="${actor.name}" class="h-10 w-10 rounded-full">
+                                    <div>
+                                    <p class="font-medium text-sm">${actor.name}</p>
+                                    <p class="text-xs text-gray-500">${actor.type}</p>
+                                    </div>
+                                </div>
+                            `).join('') || '<p class="text-sm text-gray-500">Nenhum responsável atribuído.</p>'}
+                        </div>
+                    </div>
+                    
+                    ${deliverables.length > 0 ? `
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-text-primary mb-3">Entregáveis</h4>
+                            <ul class="space-y-2">
+                                ${deliverables.map(del => `
+                                    <li class="text-sm">
+                                        <a href="${del.url || '#'}" class="text-blue-600 hover:underline flex items-center ${del.url ? '' : 'opacity-50 pointer-events-none'}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                                            <span>${del.name} <span class="text-gray-500 text-xs">(${del.status})</span></span>
+                                        </a>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+
+                     ${task.kpiImpact && task.kpiImpact.length > 0 ? `
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-text-primary mb-3">Impacto nos KPIs</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            ${task.kpiImpact.map(kpi => `
+                                <div class="bg-primary/10 p-3 rounded-lg">
+                                    <p class="text-xs font-medium" style="color: var(--color-primary);">${kpi.label}</p>
+                                    <p class="text-xl font-bold mt-1" style="color: var(--color-primary);">+${kpi.value.toLocaleString('pt-BR')}</p>
+                                </div>
+                            `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            taskModal.classList.remove('hidden');
+            taskModal.classList.add('flex');
+            setTimeout(() => taskModal.classList.add('visible'), 10);
+            
+            document.getElementById('close-modal-btn').addEventListener('click', closeTaskModal);
+        }
+
+        function closeTaskModal() {
+            taskModal.classList.remove('visible');
+            setTimeout(() => {
+                taskModal.classList.add('hidden');
+                taskModal.classList.remove('flex');
+                taskModalContent.innerHTML = '';
+            }, 300);
+        }
+
+        function openActorModal(actorId) {
+            const actor = db.actors.find(a => a.id === actorId);
+            if (!actor) return;
+
+            const actorTasks = db.tasks.filter(task => task.assignedTo.includes(actorId));
+            const actorDeliverableIds = actorTasks.flatMap(task => task.deliverableIds);
+            const actorDeliverables = db.deliverables.filter(del => actorDeliverableIds.includes(del.id));
+
+            const statusColors = {
+                'Concluído': 'bg-green-100 text-green-800',
+                'Em Andamento': 'bg-yellow-100 text-yellow-800',
+                'A Fazer': 'bg-gray-200 text-gray-800',
+                'Entregue': 'bg-green-100 text-green-800',
+                'Pendente': 'bg-yellow-100 text-yellow-800'
+            };
+            
+            actorModalContent.innerHTML = `
+                <div class="relative">
+                    <button id="close-actor-modal-btn" class="absolute -top-2 -right-4 text-gray-400 hover:text-gray-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <div class="flex items-center space-x-4">
+                        <img src="https://i.pravatar.cc/150?u=${actor.id}" alt="${actor.name}" class="h-20 w-20 rounded-full border-4 border-primary">
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-bold text-text-primary">${actor.name}</h2>
+                            <p class="text-md font-medium" style="color: var(--color-primary);">${actor.type}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-text-primary text-lg mb-3 border-b pb-2">Tarefas Associadas</h4>
+                            ${actorTasks.length > 0 ? `
+                                <ul class="space-y-3">
+                                    ${actorTasks.map(task => `
+                                        <li class="bg-white/60 p-3 rounded-lg">
+                                            <div class="flex justify-between items-start">
+                                                <p class="font-semibold text-text-primary">${task.title}</p>
+                                                <span class="text-xs font-semibold whitespace-nowrap px-2 py-1 rounded-full ${statusColors[task.status] || 'bg-gray-100'}">${task.status}</span>
+                                            </div>
+                                            <p class="text-sm text-text-secondary mt-1">${task.description}</p>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            ` : '<p class="text-sm text-gray-500">Nenhuma tarefa associada a este ator.</p>'}
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-text-primary text-lg mb-3 border-b pb-2">Entregáveis Gerados</h4>
+                             ${actorDeliverables.length > 0 ? `
+                                <ul class="space-y-2">
+                                    ${actorDeliverables.map(del => `
+                                        <li class="text-sm">
+                                            <a href="${del.url || '#'}" class="text-blue-600 hover:underline flex items-center ${del.url ? '' : 'opacity-50 pointer-events-none'}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                                                <span>${del.name} <span class="px-2 py-0.5 ml-2 text-xs font-semibold rounded-full ${statusColors[del.status] || 'bg-gray-100'}">${del.status}</span></span>
+                                            </a>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            ` : '<p class="text-sm text-gray-500">Nenhum entregável gerado por este ator.</p>'}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            actorModal.classList.remove('hidden');
+            actorModal.classList.add('flex');
+            setTimeout(() => actorModal.classList.add('visible'), 10);
+            
+            document.getElementById('close-actor-modal-btn').addEventListener('click', closeActorModal);
+        }
+
+        function closeActorModal() {
+            actorModal.classList.remove('visible');
+            setTimeout(() => {
+                actorModal.classList.add('hidden');
+                actorModal.classList.remove('flex');
+                actorModalContent.innerHTML = '';
+            }, 300);
+        }
+
+        // --- INITIALIZATION LOGIC ---
+
+        function initDashboardCharts() {
+            // Timeline
+            if (document.getElementById('timeline-container')) {
+                 const container = document.getElementById('timeline-container');
+                 const items = new vis.DataSet(db.dashboardData.timelineEvents);
+                 const groups = new vis.DataSet([
+                    {id: 'Viabilidade', content: 'Fase 1: Viabilidade'},
+                    {id: 'Piloto', content: 'Fase 2: Piloto'},
+                    {id: 'Escala', content: 'Fase 3: Escala'},
+                 ]);
+
+                const options = {
+                    stack: false,
+                    groupOrder: 'content',
+                    margin: { item: { horizontal: 5, vertical: 10 } },
+                    zoomable: true,
+                    zoomMin: 1000 * 60 * 60 * 24 * 30, // 1 mês
+                    zoomMax: 1000 * 60 * 60 * 24 * 365 * 3, // 3 anos
+                };
+                new vis.Timeline(container, items, groups, options);
+            }
+
+            // Tasks Chart (Doughnut)
+            if (document.getElementById('tasks-chart')) {
+                const ctx = document.getElementById('tasks-chart').getContext('2d');
+                const statusCounts = state.tasks.reduce((acc, task) => {
+                    acc[task.status] = (acc[task.status] || 0) + 1;
+                    return acc;
+                }, {});
+
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(statusCounts),
+                        datasets: [{
+                            label: 'Status das Tarefas',
+                            data: Object.values(statusCounts),
+                            backgroundColor: [
+                                '#FBBF24', // Em Andamento (yellow-400)
+                                '#34D399', // Concluído (green-400)
+                                '#9CA3AF', // A Fazer (gray-400)
+                            ],
+                            borderColor: 'var(--color-surface)',
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Map
+            if(document.getElementById('map')) {
+                const map = L.map('map').setView([-21.75, -41.15], 10);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+
+                const iconMap = {
+                    'Grupo Interno': L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]}),
+                    'Poder Público': L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]}),
+                    'Comunidade': L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]}),
+                    'Academia': L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]}),
+                    'default': L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]})
+                };
+                
+                db.actors.forEach(actor => {
+                    const icon = iconMap[actor.type] || iconMap['default'];
+                    if(actor.location.lat && actor.location.lng) {
+                        L.marker([actor.location.lat, actor.location.lng], {icon: icon}).addTo(map)
+                            .bindPopup(`<strong>${actor.name}</strong><br>${actor.type}`);
+                    }
+                });
+            }
+        }
+
+        function initKanban() {
+            const cards = document.querySelectorAll('.kanban-card');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            cards.forEach(card => {
+                card.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', e.target.id);
+                    e.dataTransfer.effectAllowed = 'move';
+                    setTimeout(() => e.target.classList.add('dragging'), 0);
+                });
+
+                card.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('dragging');
+                });
+                
+                card.addEventListener('click', (e) => {
+                    openTaskModal(e.currentTarget.id);
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    
+                    const taskId = e.dataTransfer.getData('text/plain');
+                    const draggedElement = document.getElementById(taskId);
+
+                    if (draggedElement && zone.id.startsWith('col-')) {
+                        zone.appendChild(draggedElement);
+                        
+                        const idParts = zone.id.split('-');
+                        const newStatus = idParts.slice(3).join(' ');
+
+                        // Update state
+                        const taskIndex = state.tasks.findIndex(t => t.id === taskId);
+                        if (taskIndex !== -1) {
+                            state.tasks[taskIndex].status = newStatus;
+                            console.log(`Tarefa ${taskId} movida para ${newStatus}`);
+                        }
+                    }
+                });
+            });
+        }
+
+        function initActorsPage() {
+            const actorCards = document.querySelectorAll('.actor-card');
+            actorCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const actorId = e.currentTarget.dataset.actorId;
+                    if (actorId) {
+                        openActorModal(actorId);
+                    }
+                });
+            });
+        }
+        
+        function initApp() {
+            // Load user profile
+            const currentUser = db.config.currentUser;
+            document.getElementById('current-user-avatar').src = currentUser.avatarUrl;
+            
+            // Set up router
+            window.addEventListener('hashchange', () => navigateTo(window.location.hash));
+            navigateTo(window.location.hash || '#dashboard');
+
+            // --- HEADER INTERACTIONS ---
+            
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', () => {
+                const isMenuOpen = !mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden', !isMenuOpen);
+                menuIconClose.classList.toggle('hidden', isMenuOpen);
+            });
+
+            // Close mobile menu when a link is clicked
+            document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+
+            // Profile dropdown toggle
+            profileButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isHidden = profileDropdown.classList.contains('hidden');
+                if(isHidden) {
+                    profileDropdown.classList.remove('hidden');
+                    setTimeout(() => {
+                        profileDropdown.classList.remove('opacity-0', 'scale-95');
+                    }, 10);
+                } else {
+                    profileDropdown.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => {
+                        profileDropdown.classList.add('hidden');
+                    }, 200);
+                }
+            });
+
+            // Close dropdown when clicking outside
+            window.addEventListener('click', (e) => {
+                if (!profileDropdown.classList.contains('hidden') && !profileButton.contains(e.target)) {
+                    profileDropdown.classList.add('opacity-0', 'scale-95');
+                     setTimeout(() => {
+                        profileDropdown.classList.add('hidden');
+                    }, 200);
+                }
+            });
+
+            // Modal Global Listeners
+            taskModal.addEventListener('click', (e) => {
+                if (e.target.id === 'task-modal') {
+                    closeTaskModal();
+                }
+            });
+
+            actorModal.addEventListener('click', (e) => {
+                if (e.target.id === 'actor-modal') {
+                    closeActorModal();
+                }
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (taskModal.classList.contains('visible')) {
+                        closeTaskModal();
+                    }
+                    if (actorModal.classList.contains('visible')) {
+                        closeActorModal();
+                    }
+                }
+            });
+        }
+
+        // --- APP START ---
+        initApp();
+
     </script>
 </body>
 </html>

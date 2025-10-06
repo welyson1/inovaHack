@@ -1,0 +1,205 @@
+{
+  "users": [
+    {
+      "userId": "user001",
+      "name": "Ana Silva",
+      "role": "Gerente de Sustentabilidade",
+      "institutionId": "inst001",
+      "avatarUrl": "https://placehold.co/100x100/E2D5FF/311A67?text=AS",
+      "email": "ana.silva@ferroport.com.br"
+    },
+    {
+      "userId": "user002",
+      "name": "Bruno Costa",
+      "role": "Engenheiro de Operações",
+      "institutionId": "inst001",
+      "avatarUrl": "https://placehold.co/100x100/D5FFD6/1A6731?text=BC",
+      "email": "bruno.costa@ferroport.com.br"
+    },
+    {
+      "userId": "user003",
+      "name": "Carla Moreira",
+      "role": "Pesquisadora Chefe",
+      "institutionId": "inst002",
+      "avatarUrl": "https://placehold.co/100x100/FFF3D5/675F1A?text=CM",
+      "email": "carla.m@uenf.br"
+    },
+    {
+      "userId": "user004",
+      "name": "Daniel Furtado",
+      "role": "Secretário de Obras",
+      "institutionId": "inst003",
+      "avatarUrl": "https://placehold.co/100x100/D5E8FF/1A4A67?text=DF",
+      "email": "daniel.furtado@sjb.gov.br"
+    }
+  ],
+  "institutions": [
+    {
+      "institutionId": "inst001",
+      "name": "Ferroport",
+      "type": "Empresa"
+    },
+    {
+      "institutionId": "inst002",
+      "name": "Universidade Estadual do Norte Fluminense (UENF)",
+      "type": "Universidade"
+    },
+    {
+      "institutionId": "inst003",
+      "name": "Prefeitura de São João da Barra",
+      "type": "Governo"
+    },
+    {
+      "institutionId": "inst004",
+      "name": "Comunidade de Açu",
+      "type": "Comunidade"
+    }
+  ],
+  "kanbanColumns": [
+    {
+      "columnId": "col01",
+      "title": "Fase 1: Estruturação e Viabilidade",
+      "order": 1
+    },
+    {
+      "columnId": "col02",
+      "title": "Fase 2: Projeto Piloto e Validação",
+      "order": 2
+    },
+    {
+      "columnId": "col03",
+      "title": "Fase 3: Escalonamento e Impacto",
+      "order": 3
+    },
+    {
+      "columnId": "col04",
+      "title": "Concluído",
+      "order": 4
+    }
+  ],
+  "tasks": [
+    {
+      "taskId": "task01",
+      "title": "Caracterização Detalhada do Sedimento",
+      "description": "Coletar amostras e realizar ensaios geotécnicos, físicos e químicos completos para validar conformidade com Resolução CONAMA.",
+      "columnId": "col01",
+      "assigneeIds": ["user003"],
+      "institutionId": "inst002",
+      "dueDate": "2025-11-30T23:59:59Z",
+      "deliverables": ["Relatório técnico final aprovado"],
+      "tags": ["P&D", "Análise"]
+    },
+    {
+      "taskId": "task02",
+      "title": "Formalização de Parcerias (MoU)",
+      "description": "Elaborar e assinar Memorandos de Entendimento com Prefeituras e Universidades.",
+      "columnId": "col01",
+      "assigneeIds": ["user001", "user004"],
+      "institutionId": "inst001",
+      "dueDate": "2026-01-15T23:59:59Z",
+      "deliverables": ["MoU com UENF assinado", "MoU com Prefeitura de SJB assinado"],
+      "tags": ["Governança", "Jurídico"]
+    },
+    {
+      "taskId": "task03",
+      "title": "Alocação e Beneficiamento do Sedimento (Piloto)",
+      "description": "Destinar 5% do sedimento dragado para a área de desidratação e beneficiamento no terminal.",
+      "columnId": "col02",
+      "assigneeIds": ["user002"],
+      "institutionId": "inst001",
+      "dueDate": "2026-04-20T23:59:59Z",
+      "deliverables": ["Plano operacional de beneficiamento"],
+      "tags": ["Operação", "Logística"]
+    },
+    {
+      "taskId": "task04",
+      "title": "Produção Piloto de Blocos e Pavers",
+      "description": "Fabricar os primeiros 5.000 blocos ecológicos para teste e validação.",
+      "columnId": "col02",
+      "assigneeIds": ["user002", "user003"],
+      "institutionId": "inst001",
+      "dueDate": "2026-06-30T23:59:59Z",
+      "deliverables": ["Lote de 5.000 blocos produzidos", "Laudos de conformidade ABNT"],
+      "tags": ["Produção", "Qualidade"]
+    },
+    {
+      "taskId": "task05",
+      "title": "Execução de Obra Demonstrativa",
+      "description": "Utilizar os materiais na pavimentação da rua principal da comunidade do Açu.",
+      "columnId": "col03",
+      "assigneeIds": ["user004", "user002"],
+      "institutionId": "inst003",
+      "dueDate": "2026-09-10T23:59:59Z",
+      "deliverables": ["Rua pavimentada e entregue"],
+      "tags": ["Infraestrutura", "Comunidade"]
+    },
+    {
+      "taskId": "task06",
+      "title": "Desenvolvimento do Plano de Negócios",
+      "description": "Detalhar os modelos de negócio para as frentes 'Construir Local' e 'Resiliência Costeira'.",
+      "columnId": "col04",
+      "assigneeIds": ["user001"],
+      "institutionId": "inst001",
+      "dueDate": "2025-10-25T23:59:59Z",
+      "deliverables": ["Plano de negócios validado pela diretoria"],
+      "tags": ["Estratégia", "Governança"]
+    }
+  ],
+  "impactMetrics": {
+    "geeCompensated": 1250, 
+    "sedimentProcessed": 15000, 
+    "institutionsReached": 4,
+    "peopleReached": 5000,
+    "materialsProduced": [
+      { "name": "Tijolo Ecológico", "quantity": 25000, "unit": "unidades" },
+      { "name": "Bloco de Pavimentação", "quantity": 500, "unit": "m²" },
+      { "name": "Sub-base para Estradas", "quantity": 1200, "unit": "toneladas" },
+      { "name": "Argamassa Sustentável", "quantity": 800, "unit": "toneladas" }
+    ]
+  },
+  "feedItems": [
+    {
+      "feedId": "feed01",
+      "title": "Parceria de Sucesso!",
+      "description": "Assinamos hoje o Memorando de Entendimento com a Prefeitura de São João da Barra para uso dos nossos materiais em obras locais.",
+      "mediaUrl": "https://placehold.co/600x400/D5E8FF/1A4A67?text=Parceria+Assinada",
+      "mediaType": "image",
+      "publishDate": "2026-01-15T14:00:00Z",
+      "relatedTaskId": "task02"
+    },
+    {
+      "feedId": "feed02",
+      "title": "Primeiros Blocos Ecológicos saem do forno!",
+      "description": "Nossa planta piloto produziu o primeiro lote de blocos sustentáveis. Qualidade e inovação andando juntas.",
+      "mediaUrl": "https://placehold.co/600x400/FFF3D5/675F1A?text=Produção+Piloto",
+      "mediaType": "image",
+      "publishDate": "2026-06-28T10:30:00Z",
+      "relatedTaskId": "task04"
+    },
+    {
+      "feedId": "feed03",
+      "title": "Comunidade do Açu comemora rua nova",
+      "description": "A pavimentação da rua principal, feita com nossos blocos ecológicos, foi entregue hoje em uma cerimônia emocionante.",
+      "mediaUrl": "https://placehold.co/600x400/D5FFD6/1A6731?text=Rua+Entregue",
+      "mediaType": "video",
+      "publishDate": "2026-09-10T18:00:00Z",
+      "relatedTaskId": "task05"
+    }
+  ],
+  "project": {
+    "projectId": "proj_sedimento_vivo",
+    "name": "Sedimento Vivo",
+    "description": "Transformar o sedimento de dragagem de um passivo operacional em um ativo estratégico de triplo impacto: ambiental, social e de governança.",
+    "startDate": "2025-08-01T00:00:00Z",
+    "timeline": [
+        {"phase": "Fase 1", "startDate": "2025-08-01", "endDate": "2026-02-01"},
+        {"phase": "Fase 2", "startDate": "2026-02-02", "endDate": "2026-08-01"},
+        {"phase": "Fase 3", "startDate": "2026-08-02", "endDate": "2027-02-01"}
+    ],
+    "mapLocations": [
+        {"name": "Terminal Ferroport", "lat": -21.63, "lng": -41.02, "type": "operations"},
+        {"name": "Comunidade do Açu", "lat": -21.84, "lng": -41.04, "type": "impact"},
+        {"name": "Prefeitura de SJB", "lat": -21.64, "lng": -41.05, "type": "partner"}
+    ]
+  }
+}
